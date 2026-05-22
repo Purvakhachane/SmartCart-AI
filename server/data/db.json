@@ -1,0 +1,57 @@
+{
+  "users": [
+    {
+      "id": "user-guest",
+      "username": "guest",
+      "passwordHash": "$2a$10$abcdefghijklmnopqrstuv",
+      "name": "Guest User",
+      "email": "guest@shoppingassistant.ai",
+      "budget": 150000,
+      "createdAt": "2026-05-20T12:00:00.000Z"
+    }
+  ],
+  "wishlist": [
+    {
+      "id": "wish-1",
+      "userId": "user-guest",
+      "productId": "prod-macbook-air-m3",
+      "addedAt": "2026-05-21T14:30:00.000Z"
+    },
+    {
+      "id": "wish-2",
+      "userId": "user-guest",
+      "productId": "prod-cerave-cleanser",
+      "addedAt": "2026-05-22T09:15:00.000Z"
+    }
+  ],
+  "searches": [
+    {
+      "userId": "user-guest",
+      "query": "macbook air m3",
+      "category": "Laptops",
+      "timestamp": "2026-05-22T10:05:00.000Z"
+    },
+    {
+      "userId": "user-guest",
+      "query": "skincare for dry skin",
+      "category": "Skincare",
+      "timestamp": "2026-05-22T10:12:00.000Z"
+    }
+  ],
+  "alerts": [
+    {
+      "id": "alert-1",
+      "userId": "user-guest",
+      "productId": "prod-iphone-15-pro",
+      "targetPrice": 145000,
+      "active": true,
+      "notified": false,
+      "createdAt": "2026-05-22T10:30:00.000Z"
+    }
+  ],
+  "logs": [
+    {"id": "log-1", "timestamp": "2026-05-22T21:00:00.000Z", "type": "System", "message": "Amazon Shopping Assistant Database Initialized"},
+    {"id": "log-2", "timestamp": "2026-05-22T21:05:00.000Z", "type": "API", "message": "Mock Amazon Advertising API connection established - Rate limit set to 60 req/min"},
+    {"id": "log-3", "timestamp": "2026-05-22T21:10:00.000Z", "type": "Alert", "message": "Price tracking scheduler started successfully - Checking intervals: 60s"}
+  ]
+}

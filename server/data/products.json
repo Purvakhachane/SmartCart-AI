@@ -1,0 +1,409 @@
+[
+  {
+    "id": "prod-macbook-air-m3",
+    "name": "Apple 2024 MacBook Air 13-inch Laptop with M3 chip",
+    "brand": "Apple",
+    "category": "Laptops",
+    "price": 104900,
+    "originalPrice": 114900,
+    "rating": 4.7,
+    "reviewsCount": 842,
+    "image": "💻",
+    "specs": {
+      "Processor": "Apple M3 Chip (8-core CPU, 10-core GPU)",
+      "RAM": "8GB unified memory",
+      "Storage": "256GB SSD",
+      "Display": "13.6-inch Liquid Retina Display with True Tone",
+      "Battery Life": "Up to 18 hours",
+      "OS": "macOS Sonoma",
+      "Weight": "1.24 kg"
+    },
+    "priceHistory": [
+      {"date": "2025-12", "price": 114900},
+      {"date": "2026-01", "price": 112900},
+      {"date": "2026-02", "price": 109900},
+      {"date": "2026-03", "price": 109900},
+      {"date": "2026-04", "price": 107900},
+      {"date": "2026-05", "price": 104900}
+    ],
+    "reviews": [
+      {"user": "Aarav S.", "rating": 5, "text": "Absolutely incredible battery life. The M3 chip handles all my multitasking flawlessly without heating up. Highly recommended!", "date": "2026-04-12", "sentiment": "positive", "verified": true},
+      {"user": "Rohan D.", "rating": 4, "text": "Super fast, lightweight, and sleek. Wish 16GB RAM was the base standard, but for daily office work and coding, 8GB is sufficient.", "date": "2026-05-02", "sentiment": "positive", "verified": true},
+      {"user": "Priya M.", "rating": 5, "text": "Beautiful screen and silent typing. Best student laptop money can buy. Travel companion forever.", "date": "2026-05-10", "sentiment": "positive", "verified": true},
+      {"user": "Vikram K.", "rating": 3, "text": "The laptop is amazing, but getting only 256GB storage at this premium price is a bit restrictive.", "date": "2026-05-18", "sentiment": "negative", "verified": false}
+    ],
+    "pros": [
+      "Outstanding M3 performance",
+      "Stunning fanless, completely silent design",
+      "Exceptional battery life (up to 18 hours)",
+      "Vibrant Liquid Retina screen"
+    ],
+    "cons": [
+      "Base model only has 8GB RAM",
+      "256GB storage is low for content creators",
+      "Limited port selection (only 2 Thunderbolt ports)"
+    ],
+    "sentimentAnalysis": {
+      "positive": 88,
+      "negative": 8,
+      "neutral": 4,
+      "fakeReviewProbability": 12,
+      "keywordCloud": [
+        {"text": "battery", "value": 85},
+        {"text": "silent", "value": 60},
+        {"text": "lightweight", "value": 55},
+        {"text": "M3 performance", "value": 75},
+        {"text": "expensive", "value": 30},
+        {"text": "8GB RAM", "value": 40}
+      ]
+    }
+  },
+  {
+    "id": "prod-asus-zephyrus-g14",
+    "name": "ASUS ROG Zephyrus G14 Gaming Laptop",
+    "brand": "ASUS",
+    "category": "Laptops",
+    "price": 149990,
+    "originalPrice": 174990,
+    "rating": 4.5,
+    "reviewsCount": 421,
+    "image": "🎮",
+    "specs": {
+      "Processor": "AMD Ryzen 7 8845HS (8 Cores, 16 Threads)",
+      "Graphics": "NVIDIA GeForce RTX 4060 8GB GDDR6",
+      "RAM": "16GB LPDDR5X (Dual Channel)",
+      "Storage": "512GB PCIe 4.0 NVMe M.2 SSD",
+      "Display": "14-inch ROG Nebula OLED QHD+ 120Hz",
+      "Battery Life": "Up to 8 hours (Eco mode)",
+      "OS": "Windows 11 Home",
+      "Weight": "1.50 kg"
+    },
+    "priceHistory": [
+      {"date": "2025-12", "price": 174990},
+      {"date": "2026-01", "price": 169990},
+      {"date": "2026-02", "price": 164990},
+      {"date": "2026-03", "price": 159990},
+      {"date": "2026-04", "price": 154990},
+      {"date": "2026-05", "price": 149990}
+    ],
+    "reviews": [
+      {"user": "Rohan P.", "rating": 5, "text": "The OLED display is jaw-dropping! Games like Cyberpunk look unbelievably vivid. Compact and super powerful.", "date": "2026-04-18", "sentiment": "positive", "verified": true},
+      {"user": "Nisha G.", "rating": 4, "text": "Runs hot during long AAA gaming sessions, but fan profiles in Armoury Crate help. The thin chassis is great for carrying to work.", "date": "2026-04-29", "sentiment": "neutral", "verified": true},
+      {"user": "Rajesh T.", "rating": 5, "text": "Best compact gaming machine ever. Excellent keyboard and surprisingly loud speakers.", "date": "2026-05-11", "sentiment": "positive", "verified": true},
+      {"user": "Abhishek L.", "rating": 2, "text": "Defective unit arrived with a stuck pixel. Replacing it took 10 days. Performance is okay but support could be better.", "date": "2026-05-15", "sentiment": "negative", "verified": false}
+    ],
+    "pros": [
+      "Incredible 120Hz OLED screen",
+      "Remarkably portable for a gaming laptop",
+      "Strong gaming performance on high settings",
+      "Premium aluminum build quality"
+    ],
+    "cons": [
+      "Chassis gets quite hot under load",
+      "Fan noise is loud in Turbo mode",
+      "Soldered memory limit expansion"
+    ],
+    "sentimentAnalysis": {
+      "positive": 80,
+      "negative": 12,
+      "neutral": 8,
+      "fakeReviewProbability": 18,
+      "keywordCloud": [
+        {"text": "OLED screen", "value": 90},
+        {"text": "gaming performance", "value": 85},
+        {"text": "runs hot", "value": 65},
+        {"text": "portable", "value": 50},
+        {"text": "loud fans", "value": 55}
+      ]
+    }
+  },
+  {
+    "id": "prod-iphone-15-pro",
+    "name": "Apple iPhone 15 Pro Max (256 GB, Natural Titanium)",
+    "brand": "Apple",
+    "category": "Mobile",
+    "price": 148900,
+    "originalPrice": 159900,
+    "rating": 4.8,
+    "reviewsCount": 1250,
+    "image": "📱",
+    "specs": {
+      "Processor": "A17 Pro chip with 6-core GPU",
+      "Camera": "48MP Main, 12MP Ultra Wide, 12MP 5x Telephoto",
+      "Display": "6.7-inch Super Retina XDR with ProMotion",
+      "Storage": "256GB",
+      "Battery Life": "Up to 29 hours video playback",
+      "Connector": "USB-C (supports USB 3)",
+      "Weight": "221 g"
+    },
+    "priceHistory": [
+      {"date": "2025-12", "price": 159900},
+      {"date": "2026-01", "price": 156900},
+      {"date": "2026-02", "price": 154900},
+      {"date": "2026-03", "price": 152900},
+      {"date": "2026-04", "price": 149900},
+      {"date": "2026-05", "price": 148900}
+    ],
+    "reviews": [
+      {"user": "Kabir J.", "rating": 5, "text": "The camera zoom is stunning. The 5x optical telephoto takes beautiful photos of nature. Titanium build feels super premium and lightweight.", "date": "2026-03-22", "sentiment": "positive", "verified": true},
+      {"user": "Sneha R.", "rating": 5, "text": "Best battery life on an iPhone yet. I easily get 1.5 days on a single charge. Custom action button is actually useful.", "date": "2026-04-10", "sentiment": "positive", "verified": true},
+      {"user": "Aditya P.", "rating": 4, "text": "Expensive but worth it if you appreciate premium cameras and screens. USB-C makes charging everything with one cable so easy.", "date": "2026-05-01", "sentiment": "positive", "verified": true},
+      {"user": "Gaurav H.", "rating": 2, "text": "Getting too hot while charging. Also, the natural titanium finish scratches easily on the edges. Dissatisfied given the extreme price.", "date": "2026-05-14", "sentiment": "negative", "verified": true}
+    ],
+    "pros": [
+      "Stunning 5x Telephoto optical zoom",
+      "Durable, lightweight titanium frame",
+      "Superb A17 Pro performance for gaming",
+      "Convenient USB-C port addition"
+    ],
+    "cons": [
+      "Extremely expensive",
+      "Slow out-of-box charging speed limit",
+      "No charging brick included in box"
+    ],
+    "sentimentAnalysis": {
+      "positive": 92,
+      "negative": 6,
+      "neutral": 2,
+      "fakeReviewProbability": 8,
+      "keywordCloud": [
+        {"text": "camera zoom", "value": 95},
+        {"text": "titanium", "value": 80},
+        {"text": "USB-C", "value": 70},
+        {"text": "battery king", "value": 85},
+        {"text": "expensive", "value": 50},
+        {"text": "heats up", "value": 25}
+      ]
+    }
+  },
+  {
+    "id": "prod-samsung-s24-ultra",
+    "name": "Samsung Galaxy S24 Ultra (256 GB, Titanium Gray)",
+    "brand": "Samsung",
+    "category": "Mobile",
+    "price": 129999,
+    "originalPrice": 139999,
+    "rating": 4.7,
+    "reviewsCount": 980,
+    "image": "🤖",
+    "specs": {
+      "Processor": "Snapdragon 8 Gen 3 for Galaxy",
+      "Camera": "200MP Main, 50MP Periscope, 12MP Ultra Wide, 10MP Tele",
+      "Display": "6.8-inch Dynamic AMOLED 2X, QHD+, 120Hz, Flat Screen",
+      "Storage": "256GB",
+      "Battery Life": "5000 mAh with 45W fast charge",
+      "S-Pen": "Included inside chassis",
+      "Weight": "232 g"
+    },
+    "priceHistory": [
+      {"date": "2025-12", "price": 139999},
+      {"date": "2026-01", "price": 136999},
+      {"date": "2026-02", "price": 134999},
+      {"date": "2026-03", "price": 132999},
+      {"date": "2026-04", "price": 130999},
+      {"date": "2026-05", "price": 129999}
+    ],
+    "reviews": [
+      {"user": "Divya N.", "rating": 5, "text": "The Galaxy AI tools are brilliant! I love the Circle to Search and live translation features. S-Pen is extremely useful for annotations.", "date": "2026-04-05", "sentiment": "positive", "verified": true},
+      {"user": "Kunal B.", "rating": 5, "text": "The anti-reflective glass screen is amazing. In bright daylight, you can read the screen perfectly with zero glare. Camera zoom is insane.", "date": "2026-04-20", "sentiment": "positive", "verified": true},
+      {"user": "Mohit S.", "rating": 4, "text": "Performance is lightning fast. Battery lasts all day long. Wish Samsung included the charger in the box.", "date": "2026-05-08", "sentiment": "positive", "verified": true},
+      {"user": "Ananya P.", "rating": 3, "text": "The flat screen is a nice upgrade, but the phone feels very bulky and heavy in hand. The 200MP camera is good, but portraits sometimes look pale.", "date": "2026-05-19", "sentiment": "neutral", "verified": false}
+    ],
+    "pros": [
+      "Stunning anti-reflective glass display",
+      "Practical built-in S-Pen stylus functionality",
+      "Excellent AI features (Circle to Search, Live Translate)",
+      "Unparalleled 200MP main camera details"
+    ],
+    "cons": [
+      "Large and heavy to hold (232 g)",
+      "Slightly oversaturated colors in some photos",
+      "No 45W charger in retail package"
+    ],
+    "sentimentAnalysis": {
+      "positive": 89,
+      "negative": 7,
+      "neutral": 4,
+      "fakeReviewProbability": 10,
+      "keywordCloud": [
+        {"text": "Galaxy AI", "value": 90},
+        {"text": "S-Pen", "value": 75},
+        {"text": "no glare screen", "value": 85},
+        {"text": "200MP camera", "value": 80},
+        {"text": "heavy phone", "value": 45}
+      ]
+    }
+  },
+  {
+    "id": "prod-cerave-cleanser",
+    "name": "CeraVe Hydrating Facial Cleanser for Normal to Dry Skin",
+    "brand": "CeraVe",
+    "category": "Skincare",
+    "price": 1250,
+    "originalPrice": 1450,
+    "rating": 4.6,
+    "reviewsCount": 3500,
+    "image": "🧴",
+    "specs": {
+      "Skin Type": "Normal, Dry, Sensitive Skin",
+      "Volume": "473 ml",
+      "Key Ingredients": "Ceramides (1, 3, 6-II), Hyaluronic Acid, Glycerin",
+      "Texture": "Non-foaming cream gel",
+      "Benefits": "Cleanses, hydrates, restores skin barrier",
+      "Fragrance": "100% Fragrance-Free"
+    },
+    "priceHistory": [
+      {"date": "2025-12", "price": 1450},
+      {"date": "2026-01", "price": 1400},
+      {"date": "2026-02", "price": 1350},
+      {"date": "2026-03", "price": 1350},
+      {"date": "2026-04", "price": 1290},
+      {"date": "2026-05", "price": 1250}
+    ],
+    "reviews": [
+      {"user": "Meera G.", "rating": 5, "text": "Absolute holy grail for dry skin. My skin doesn't feel tight or stripped after washing. It feels soft and hydrated.", "date": "2026-03-15", "sentiment": "positive", "verified": true},
+      {"user": "Ritu K.", "rating": 5, "text": "Recommended by my dermatologist and it works miracles. Excellent for eczema-prone sensitive skin. Huge bottle lasts forever.", "date": "2026-04-22", "sentiment": "positive", "verified": true},
+      {"user": "Siddharth V.", "rating": 4, "text": "Very gentle cleanser. It doesn't foam, which feels weird at first, but it does clean thoroughly. Great for winter seasons.", "date": "2026-05-05", "sentiment": "positive", "verified": true},
+      {"user": "Nisha S.", "rating": 2, "text": "Didn't clean heavy makeup at all. Left a slimy film on my face. Made me break out with small whiteheads after three days.", "date": "2026-05-16", "sentiment": "negative", "verified": true}
+    ],
+    "pros": [
+      "Extremely gentle, non-stripping formula",
+      "Contains skin-restoring ceramides",
+      "Great value for money (large 473ml bottle)",
+      "Fragrance-free and hypoallergenic"
+    ],
+    "cons": [
+      "Does not foam (might feel strange at first)",
+      "Not effective at removing waterproof makeup",
+      "Pump dispenser can sometimes leak in transit"
+    ],
+    "sentimentAnalysis": {
+      "positive": 85,
+      "negative": 10,
+      "neutral": 5,
+      "fakeReviewProbability": 5,
+      "keywordCloud": [
+        {"text": "dry skin", "value": 95},
+        {"text": "gentle cleanser", "value": 85},
+        {"text": "dermatologist", "value": 60},
+        {"text": "non-foaming", "value": 70},
+        {"text": "no fragrance", "value": 50},
+        {"text": "slimy film", "value": 15}
+      ]
+    }
+  },
+  {
+    "id": "prod-ordinary-niacinamide",
+    "name": "The Ordinary Niacinamide 10% + Zinc 1% Serum",
+    "brand": "The Ordinary",
+    "category": "Skincare",
+    "price": 850,
+    "originalPrice": 950,
+    "rating": 4.4,
+    "reviewsCount": 5120,
+    "image": "🧪",
+    "specs": {
+      "Skin Type": "Oily, Combination, Acne-Prone Skin",
+      "Volume": "30 ml",
+      "Key Ingredients": "Niacinamide (Vitamin B3) 10%, Zinc PCA 1%",
+      "Texture": "Lightweight water-based gel serum",
+      "Benefits": "Regulates sebum, reduces pores, blemishes, and dark spots",
+      "pH Level": "5.5 - 6.5"
+    },
+    "priceHistory": [
+      {"date": "2025-12", "price": 950},
+      {"date": "2026-01", "price": 950},
+      {"date": "2026-02", "price": 900},
+      {"date": "2026-03", "price": 890},
+      {"date": "2026-04", "price": 850},
+      {"date": "2026-05", "price": 850}
+    ],
+    "reviews": [
+      {"user": "Tanya C.", "rating": 5, "text": "This completely cleared up my stubborn chin acne and reduced my oily T-zone shine. Best budget serum on the market.", "date": "2026-04-12", "sentiment": "positive", "verified": true},
+      {"user": "Deepak R.", "rating": 4, "text": "Good serum for oil control. My face looks less greasy in the afternoon. Can pill slightly if you apply too many layers of moisturizer over it.", "date": "2026-04-30", "sentiment": "neutral", "verified": true},
+      {"user": "Pooja W.", "rating": 5, "text": "Helped fade my dark spots from acne scars within a month. Dropper is easy to use. Buying my third bottle.", "date": "2026-05-09", "sentiment": "positive", "verified": true},
+      {"user": "Arjun F.", "rating": 1, "text": "Gave me severe chemical burns and painful cystic breakouts. 10% is too high a concentration for sensitive skin. Beware!", "date": "2026-05-18", "sentiment": "negative", "verified": true}
+    ],
+    "pros": [
+      "Excellent oil and sebum regulation",
+      "Fades dark acne spots effectively",
+      "Highly affordable skincare item",
+      "Simple, transparent clean formula"
+    ],
+    "cons": [
+      "Can cause skin purging in initial weeks",
+      "Sticky texture if applied too heavily",
+      "May pill under certain sunscreens or makeup"
+    ],
+    "sentimentAnalysis": {
+      "positive": 78,
+      "negative": 15,
+      "neutral": 7,
+      "fakeReviewProbability": 22,
+      "keywordCloud": [
+        {"text": "oil control", "value": 90},
+        {"text": "acne scars", "value": 80},
+        {"text": "affordable", "value": 75},
+        {"text": "pilling", "value": 40},
+        {"text": "purging breakout", "value": 35}
+      ]
+    }
+  },
+  {
+    "id": "prod-echo-dot",
+    "name": "Amazon Echo Dot (5th Gen) Smart Speaker with Alexa",
+    "brand": "Amazon",
+    "category": "Smart Home",
+    "price": 4499,
+    "originalPrice": 5499,
+    "rating": 4.5,
+    "reviewsCount": 1820,
+    "image": "🗣️",
+    "specs": {
+      "Speaker Size": "1.73-inch front-firing speaker",
+      "Voice Assistant": "Alexa Built-in",
+      "Connectivity": "Wi-Fi (Dual-band), Bluetooth LE, Matter compatible",
+      "Sensors": "Temperature Sensor, Motion Detection",
+      "Privacy": "Mic-off button, voice history controls",
+      "Weight": "304 g"
+    },
+    "priceHistory": [
+      {"date": "2025-12", "price": 5499},
+      {"date": "2026-01", "price": 4999},
+      {"date": "2026-02", "price": 4999},
+      {"date": "2026-03", "price": 4499},
+      {"date": "2026-04", "price": 4499},
+      {"date": "2026-05", "price": 4499}
+    ],
+    "reviews": [
+      {"user": "Shyam K.", "rating": 5, "text": "Significant audio improvement compared to Gen 3. The bass is actually deep and clear now. Temperature sensor controls my smart AC trigger.", "date": "2026-04-14", "sentiment": "positive", "verified": true},
+      {"user": "Preeti A.", "rating": 4, "text": "Very convenient voice assistant. Set alarms, play Spotify, and control hue lights. Alexa sometimes misunderstand commands if music is too loud.", "date": "2026-05-02", "sentiment": "neutral", "verified": true},
+      {"user": "Varun M.", "rating": 5, "text": "Perfect smart bedside companion. Love the LED dot clock display (I got the clock edition). Thermometer sensor is surprisingly accurate.", "date": "2026-05-12", "sentiment": "positive", "verified": true},
+      {"user": "Jatin S.", "rating": 2, "text": "Constantly disconnects from Wi-Fi. Have to restart it every two days. Extremely annoying issue that didn't happen in older versions.", "date": "2026-05-17", "sentiment": "negative", "verified": true}
+    ],
+    "pros": [
+      "Improved richer sound and bass quality",
+      "Built-in indoor temperature & motion sensors",
+      "Seamless Matter protocol smart-home integrations",
+      "Compact, aesthetically pleasing design"
+    ],
+    "cons": [
+      "No 3.5mm audio line-out port (present in Gen 4)",
+      "Alexa voice engine needs stable Wi-Fi connection",
+      "Can fail to pick up commands in noisy environments"
+    ],
+    "sentimentAnalysis": {
+      "positive": 83,
+      "negative": 11,
+      "neutral": 6,
+      "fakeReviewProbability": 15,
+      "keywordCloud": [
+        {"text": "deep bass", "value": 85},
+        {"text": "temperature sensor", "value": 70},
+        {"text": "smart home", "value": 80},
+        {"text": "wi-fi drop", "value": 30},
+        {"text": "alexa", "value": 65}
+      ]
+    }
+  }
+]

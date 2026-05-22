@@ -1,0 +1,2330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AmzAssistant - AI Amazon Shopping Assistant & Analytics Platform</title>
+  
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="Intelligently search, compare, analyze, and track Amazon products in real-time. Power your shopping with sentiment analysis, price drop alerts, and an NLP chatbot companion.">
+  <meta name="keywords" content="Amazon shopping assistant, price tracker, product comparison, sentiment analysis, AI chatbot, e-commerce dashboard">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Confetti CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+
+  <style>
+    /* -------------------------------------------------------------
+       AMZASSISTANT PREMIUM STYLE SYSTEM
+       Custom Glassmorphic Dark-Mode Theme
+       ------------------------------------------------------------- */
+    :root {
+      --font-heading: 'Outfit', 'Inter', -apple-system, sans-serif;
+      --font-body: 'Inter', -apple-system, sans-serif;
+
+      --bg-main: #07070b;
+      --bg-card: rgba(15, 15, 23, 0.7);
+      --bg-card-hover: rgba(22, 22, 34, 0.85);
+      --bg-input: rgba(8, 8, 12, 0.85);
+      --bg-sidebar: rgba(10, 10, 15, 0.95);
+      
+      --border-color: rgba(255, 255, 255, 0.07);
+      --border-color-glow: rgba(255, 153, 0, 0.25);
+      --border-color-glow-teal: rgba(0, 242, 254, 0.25);
+
+      --text-primary: #f8fafc;
+      --text-secondary: #94a3b8;
+      --text-muted: #4b5563;
+
+      --grad-amazon: linear-gradient(135deg, #ff9900 0%, #ff5500 100%);
+      --grad-teal: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
+      --grad-violet: linear-gradient(135deg, #8a2387 0%, #e94057 50%, #f27121 100%);
+      --grad-success: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+
+      --color-amazon: #ff9900;
+      --color-teal: #00f2fe;
+      --color-success: #10b981;
+      --color-danger: #ef4444;
+      --color-warning: #f59e0b;
+
+      --glass-blur: blur(16px);
+      --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+      --glow-shadow: 0 0 20px rgba(255, 153, 0, 0.15);
+      --glow-shadow-teal: 0 0 20px rgba(0, 242, 254, 0.15);
+
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --radius-full: 9999px;
+
+      --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      --transition-normal: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: var(--font-body);
+      background-color: var(--bg-main);
+      color: var(--text-primary);
+      min-height: 100vh;
+      overflow-x: hidden;
+      line-height: 1.5;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      font-family: var(--font-heading);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    button, input, select, textarea {
+      font-family: inherit;
+      font-size: inherit;
+      color: inherit;
+      outline: none;
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: var(--bg-main);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--border-color);
+      border-radius: var(--radius-full);
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--text-secondary);
+    }
+
+    /* Layout structure */
+    .app-container {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    .app-sidebar {
+      width: 250px;
+      background: var(--bg-sidebar);
+      backdrop-filter: var(--glass-blur);
+      border-right: 1px solid var(--border-color);
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      padding: 1.5rem 1rem;
+    }
+
+    .app-content {
+      margin-left: 250px;
+      flex: 1;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      padding: 1.5rem 2.5rem;
+    }
+
+    /* Header Nav */
+    .top-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.5rem 0 1.5rem 0;
+      border-bottom: 1px solid var(--border-color);
+      margin-bottom: 2rem;
+    }
+
+    /* Glass Cards */
+    .glass-card {
+      background: var(--bg-card);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      box-shadow: var(--glass-shadow);
+      transition: transform var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast);
+    }
+
+    .glass-card:hover {
+      border-color: var(--border-color-glow);
+      box-shadow: var(--glass-shadow), var(--glow-shadow);
+    }
+
+    .glass-card-teal:hover {
+      border-color: var(--border-color-glow-teal);
+      box-shadow: var(--glass-shadow), var(--glow-shadow-teal);
+    }
+
+    /* Dynamic Pages Layout Switcher */
+    .app-page {
+      display: none;
+      animation: pageTransition 0.35s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    }
+
+    .app-page.active {
+      display: block;
+    }
+
+    @keyframes pageTransition {
+      0% { opacity: 0; transform: translateY(15px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Standard Elements */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.625rem 1.25rem;
+      font-weight: 600;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      border: 1px solid transparent;
+      font-size: 0.9rem;
+    }
+
+    .btn-primary {
+      background: var(--grad-amazon);
+      color: #fff;
+      box-shadow: 0 4px 15px rgba(255, 85, 0, 0.25);
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(255, 85, 0, 0.4);
+    }
+
+    .btn-teal {
+      background: var(--grad-teal);
+      color: #0b0b0f;
+      box-shadow: 0 4px 15px rgba(0, 242, 254, 0.2);
+    }
+    .btn-teal:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0, 242, 254, 0.35);
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 1px solid var(--border-color);
+      color: var(--text-primary);
+    }
+    .btn-outline:hover {
+      background: rgba(255, 255, 255, 0.04);
+      border-color: var(--text-secondary);
+    }
+
+    .btn-icon {
+      width: 40px;
+      height: 40px;
+      padding: 0;
+    }
+
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .input-label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .input-field {
+      background: var(--bg-input);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      padding: 0.75rem 1rem;
+      color: var(--text-primary);
+      font-size: 0.95rem;
+      transition: border-color var(--transition-fast);
+    }
+
+    .input-field:focus {
+      border-color: var(--color-amazon);
+    }
+
+    .select-field {
+      appearance: none;
+      background-image: url("data:image/svg+xml;utf8,<svg fill='%2394a3b8' height='20' viewBox='0 0 24 24' width='20' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+      background-repeat: no-repeat;
+      background-position: right 10px center;
+      padding-right: 2.25rem;
+    }
+
+    /* Grids & Cards */
+    .grid-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 1.25rem;
+      margin-bottom: 2rem;
+    }
+
+    .stat-card {
+      padding: 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .stat-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: var(--radius-sm);
+      background: rgba(255, 153, 0, 0.1);
+      color: var(--color-amazon);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+    }
+
+    .stat-icon-teal {
+      background: rgba(0, 242, 254, 0.1);
+      color: var(--color-teal);
+    }
+
+    .stat-title {
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .stat-val {
+      font-size: 1.6rem;
+      font-weight: 800;
+      line-height: 1.2;
+    }
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .product-card {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    .prod-img {
+      height: 160px;
+      background: rgba(255,255,255,0.01);
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 4rem;
+      position: relative;
+    }
+
+    .prod-tag {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: var(--grad-amazon);
+      padding: 0.2rem 0.5rem;
+      border-radius: var(--radius-full);
+      font-size: 0.7rem;
+      font-weight: 700;
+    }
+
+    .prod-details {
+      padding: 1rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .prod-cat {
+      font-size: 0.7rem;
+      color: var(--color-teal);
+      text-transform: uppercase;
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+    }
+
+    .prod-name {
+      font-size: 1rem;
+      font-weight: 600;
+      line-height: 1.3;
+      margin-bottom: 0.5rem;
+      height: 38px;
+      overflow: hidden;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+    }
+
+    .stars-row {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+      font-size: 0.8rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .price-row {
+      display: flex;
+      align-items: baseline;
+      gap: 0.5rem;
+      margin-top: auto;
+      margin-bottom: 0.85rem;
+    }
+
+    .curr-price {
+      font-size: 1.3rem;
+      font-weight: 800;
+    }
+
+    .orig-price {
+      font-size: 0.9rem;
+      text-decoration: line-through;
+      color: var(--text-muted);
+    }
+
+    /* Comparison Table */
+    .compare-wrapper {
+      overflow-x: auto;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-color);
+      background: var(--bg-card);
+      margin-bottom: 2rem;
+    }
+
+    .compare-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+    }
+
+    .compare-table th, .compare-table td {
+      padding: 1rem;
+      border-bottom: 1px solid var(--border-color);
+      vertical-align: top;
+    }
+
+    .compare-table th {
+      width: 180px;
+      color: var(--text-secondary);
+      font-weight: 700;
+      background: rgba(255,255,255,0.01);
+    }
+
+    .compare-header-cell {
+      text-align: center;
+    }
+
+    /* Chat UI */
+    .chat-wrapper {
+      display: flex;
+      flex-direction: column;
+      height: calc(100vh - 170px);
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .chat-box {
+      flex: 1;
+      overflow-y: auto;
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .chat-msg {
+      display: flex;
+      gap: 0.75rem;
+      max-width: 80%;
+    }
+
+    .chat-msg-user {
+      align-self: flex-end;
+      flex-direction: row-reverse;
+    }
+
+    .chat-msg-bot {
+      align-self: flex-start;
+    }
+
+    .chat-avatar {
+      width: 34px;
+      height: 34px;
+      border-radius: var(--radius-full);
+      background: var(--grad-teal);
+      color: #0b0b0f;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      flex-shrink: 0;
+    }
+
+    .chat-msg-user .chat-avatar {
+      background: var(--grad-amazon);
+      color: white;
+    }
+
+    .chat-bubble {
+      padding: 0.85rem 1.1rem;
+      border-radius: var(--radius-md);
+      font-size: 0.9rem;
+      white-space: pre-line;
+      line-height: 1.5;
+    }
+
+    .chat-msg-user .chat-bubble {
+      background: var(--grad-amazon);
+      color: white;
+      border-top-right-radius: 0;
+    }
+
+    .chat-msg-bot .chat-bubble {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-top-left-radius: 0;
+    }
+
+    .chat-input-row {
+      display: flex;
+      gap: 0.5rem;
+      background: rgba(15,15,22,0.8);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 0.85rem;
+      margin-top: 0.5rem;
+    }
+
+    .chat-input-row input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      color: var(--text-primary);
+    }
+
+    .suggest-prompts {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 0.5rem;
+    }
+
+    .suggest-tag {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border-color);
+      padding: 0.25rem 0.75rem;
+      border-radius: var(--radius-full);
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all var(--transition-fast);
+    }
+
+    .suggest-tag:hover {
+      background: rgba(255,153,0,0.08);
+      border-color: var(--border-color-glow);
+      color: var(--color-amazon);
+    }
+
+    /* Admin Telemetry Terminal Console */
+    .console-box {
+      background: #040407;
+      border: 1px solid #1a1a26;
+      border-radius: var(--radius-sm);
+      padding: 0.85rem;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 0.8rem;
+      color: #39ff14;
+      max-height: 250px;
+      overflow-y: auto;
+      line-height: 1.5;
+    }
+
+    .console-line {
+      margin-bottom: 0.25rem;
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .console-time { color: var(--color-amazon); }
+    .console-tag { font-weight: bold; width: 60px; }
+    .console-tag-sys { color: var(--color-teal); }
+    .console-tag-api { color: var(--color-warning); }
+    .console-tag-alr { color: var(--color-danger); }
+    .console-tag-cht { color: #ec4899; }
+
+    /* Toast system */
+    .toast-drawer {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      width: 360px;
+    }
+
+    .toast-alert {
+      background: #0c0c12;
+      border-left: 4px solid var(--color-amazon);
+      border-top: 1px solid var(--border-color);
+      border-right: 1px solid var(--border-color);
+      border-bottom: 1px solid var(--border-color);
+      padding: 0.85rem;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      animation: toastIn 0.3s ease forwards;
+    }
+
+    .toast-alert-teal {
+      border-left-color: var(--color-teal);
+    }
+
+    @keyframes toastIn {
+      0% { transform: translateY(50px); opacity: 0; }
+      100% { transform: translateY(0); opacity: 1; }
+    }
+
+    .toast-close {
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      color: var(--text-muted);
+      margin-left: auto;
+    }
+
+    /* Visual helpers */
+    .active-nav-btn {
+      background: var(--grad-amazon) !important;
+      border-color: transparent !important;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Static Notification Toast Drawer -->
+  <div class="toast-drawer" id="global-toast-drawer"></div>
+
+  <div class="app-container">
+    
+    <!-- Unified Sidebar Nav -->
+    <aside class="app-sidebar">
+      <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 2.25rem;">
+        <span style="font-size: 1.5rem;">🛍️</span>
+        <div>
+          <h2 style="font-size: 1.15rem; font-weight: 800; line-height: 1;">AmzAssistant</h2>
+          <span style="font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase; font-weight: 700; letter-spacing: 0.05em;">AI Smart Portal</span>
+        </div>
+      </div>
+
+      <nav style="display: flex; flex-direction: column; gap: 0.5rem; flex: 1;">
+        <button class="btn btn-outline active-nav-btn" style="justify-content: flex-start; border: none;" onclick="switchPage('home')" id="side-nav-home">
+          <i data-lucide="trending-up" style="width: 16px; height: 16px;"></i>
+          <span>Discover Deals</span>
+        </button>
+
+        <button class="btn btn-outline" style="justify-content: flex-start; border: none;" onclick="switchPage('search')" id="side-nav-search">
+          <i data-lucide="search" style="width: 16px; height: 16px;"></i>
+          <span>Search Catalog</span>
+        </button>
+
+        <button class="btn btn-outline" style="justify-content: flex-start; border: none; display: flex; align-items: center;" onclick="switchPage('compare')" id="side-nav-compare">
+          <i data-lucide="arrow-left-right" style="width: 16px; height: 16px;"></i>
+          <span>Compare specs</span>
+          <span id="compare-count-badge" style="display: none; margin-left: auto; background: rgba(255,255,255,0.15); font-size: 0.7rem; padding: 0.1rem 0.4rem; border-radius: 99px;">0</span>
+        </button>
+
+        <button class="btn btn-outline" style="justify-content: flex-start; border: none; display: flex; align-items: center;" onclick="switchPage('chat')" id="side-nav-chat">
+          <i data-lucide="message-square" style="width: 16px; height: 16px;"></i>
+          <span>AI Chatbot</span>
+          <span style="margin-left: auto; background: var(--grad-teal); color: #0b0b0f; font-size: 0.6rem; padding: 0.08rem 0.3rem; border-radius: 4px; font-weight: 800;">LIVE</span>
+        </button>
+
+        <button class="btn btn-outline" style="justify-content: flex-start; border: none;" onclick="switchPage('dashboard')" id="side-nav-dashboard">
+          <i data-lucide="heart" style="width: 16px; height: 16px;"></i>
+          <span>Wishlist & Trackers</span>
+        </button>
+
+        <button class="btn btn-outline" style="justify-content: flex-start; border: none;" onclick="switchPage('admin')" id="side-nav-admin">
+          <i data-lucide="shield" style="width: 16px; height: 16px;"></i>
+          <span>Telemetry Admin</span>
+        </button>
+      </nav>
+
+      {/* Guest Account view */}
+      <div class="glass-card" style="padding: 0.75rem; display: flex; flex-direction: column; gap: 0.35rem; margin-top: auto;">
+        <div style="display: flex; align-items: center; gap: 0.5rem;">
+          <div class="chat-avatar" style="width: 28px; height: 28px; background: var(--grad-success); color: white;">
+            <i data-lucide="user" style="width: 12px; height: 12px;"></i>
+          </div>
+          <div>
+            <h4 style="font-size: 0.8rem; font-weight: 700; white-space: nowrap;">Guest User</h4>
+            <span style="font-size: 0.65rem; color: var(--text-secondary);">@guest</span>
+          </div>
+        </div>
+        <div style="border-top: 1px solid var(--border-color); margin: 0.25rem 0;"></div>
+        <div style="display: flex; justify-content: space-between; font-size: 0.7rem; color: var(--text-secondary);">
+          <span>Demo budget:</span>
+          <span style="font-weight: 800; color: var(--color-teal);">₹1,50,000</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Content panels -->
+    <main class="app-content">
+      
+      <!-- Top header bar -->
+      <header class="top-nav">
+        <div style="display: flex; gap: 0.5rem; width: 45%; align-items: center; position: relative;">
+          <i data-lucide="search" style="position: absolute; left: 10px; top: 12px; width: 16px; height: 16px; color: var(--text-muted);"></i>
+          <input 
+            type="text" 
+            placeholder="Search Amazon products dynamically..." 
+            className="input-field" 
+            style="width: 100%; padding-left: 2.25rem; height: 38px;"
+            id="global-search-input"
+            onkeydown="if(event.key === 'Enter') executeGlobalSearch()"
+          >
+          <button class="btn btn-primary" style="height: 38px; padding: 0 1rem;" onclick="executeGlobalSearch()">Search</button>
+        </div>
+
+        <div style="display: flex; gap: 0.5rem;">
+          <button class="btn btn-outline btn-icon" style="border: none;" onclick="confetti({ particleCount: 50, spread: 60 })">
+            <i data-lucide="star" style="width: 18px; height: 18px; color: #ffb800;"></i>
+          </button>
+          
+          <button class="btn btn-outline" onclick="switchPage('chat')" style="background: rgba(0, 242, 254, 0.04); border-color: var(--border-color-glow-teal);">
+            <i data-lucide="message-square" style="width: 15px; height: 15px; color: var(--color-teal);"></i>
+            <span style="font-size: 0.8rem; font-weight: 700; color: var(--color-teal);">Chat Assistant</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- 1. DISCOVER DEALS PAGE -->
+      <section class="app-page active" id="page-home">
+        <div style="margin-bottom: 2rem;">
+          <h1 style="font-size: 2rem; font-weight: 800; background: linear-gradient(135deg, var(--text-primary) 30%, var(--text-secondary) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Amazon Shopping Intelligence</h1>
+          <p style="color: var(--text-secondary); font-size: 0.9rem;">Track pricing drop loops, review integrity ratings, and chat with AI bots.</p>
+        </div>
+
+        <!-- Banner -->
+        <div class="glass-card" style="padding: 1.5rem; display: flex; gap: 1.5rem; margin-bottom: 2rem; background: linear-gradient(135deg, rgba(255,153,0,0.1) 0%, rgba(0,242,254,0.05) 100%); border-color: var(--border-color-glow);">
+          <div style="flex: 1;">
+            <span style="color: var(--color-amazon); font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em;">AI Integration Active</span>
+            <h2 style="font-size: 1.5rem; font-weight: 800; margin: 0.25rem 0 0.5rem 0;">Struggling with specifications or prices?</h2>
+            <p style="color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 1rem; max-width: 550px;">
+              Ask **AmzAssistant** smart queries like *"Compare iPhone vs Samsung"* or *"Recommend cleansers under ₹1,500"*. It suggests comparative choices in real time!
+            </p>
+            <button class="btn btn-primary" onclick="switchPage('chat')">
+              <i data-lucide="message-square" style="width: 14px; height: 14px;"></i>
+              <span>Launch Live Assistant Chat</span>
+            </button>
+          </div>
+          <div style="font-size: 4rem; display: flex; align-items: center;">🤖</div>
+        </div>
+
+        <!-- Categories row -->
+        <h3 style="font-size: 1.15rem; margin-bottom: 0.85rem;">Explore Popular Smart Categories</h3>
+        <div style="display: flex; gap: 0.5rem; overflow-x: auto; padding-bottom: 0.5rem; margin-bottom: 2rem;">
+          <button class="btn btn-outline" style="border-radius: 99px;" onclick="searchByCategory('Laptops')">💻 Laptops</button>
+          <button class="btn btn-outline" style="border-radius: 99px;" onclick="searchByCategory('Mobile')">📱 Mobiles</button>
+          <button class="btn btn-outline" style="border-radius: 99px;" onclick="searchByCategory('Skincare')">🧴 Skincare</button>
+          <button class="btn btn-outline" style="border-radius: 99px;" onclick="searchByCategory('Smart Home')">🗣️ Smart Home</button>
+        </div>
+
+        <!-- Deals Grid -->
+        <h3 style="font-size: 1.15rem; margin-bottom: 0.85rem;">Trending Hot Price Drops 🔥</h3>
+        <div class="product-grid" id="home-deals-grid"></div>
+      </section>
+
+      <!-- 2. CATALOG SEARCH PAGE -->
+      <section class="app-page" id="page-search">
+        <div style="margin-bottom: 2rem;">
+          <h1 style="font-size: 2rem; font-weight: 800;">Product Discovery Catalog</h1>
+          <p style="color: var(--text-secondary); font-size: 0.9rem;">Filter specifications and sort ratings directly parsed from scrapers.</p>
+        </div>
+
+        <!-- Search Controls -->
+        <div class="glass-card" style="padding: 1rem; margin-bottom: 1.5rem;">
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0.75rem;">
+            <div class="input-group">
+              <span class="input-label">Category Filter</span>
+              <select class="input-field select-field" id="filter-search-category" onchange="runCatalogFilter()">
+                <option value="">All Categories</option>
+                <option value="Laptops">Laptops</option>
+                <option value="Mobile">Mobiles</option>
+                <option value="Skincare">Skincare</option>
+                <option value="Smart Home">Smart Home</option>
+              </select>
+            </div>
+            
+            <div class="input-group">
+              <span class="input-label">Sort Metric</span>
+              <select class="input-field select-field" id="filter-search-sort" onchange="runCatalogFilter()">
+                <option value="rating">Highest rating rating</option>
+                <option value="reviews">Total Reviews count</option>
+                <option value="price-low">Price: Low to High</option>
+                <option value="price-high">Price: High to Low</option>
+              </select>
+            </div>
+
+            <div class="input-group">
+              <span class="input-label">Max Budget (₹)</span>
+              <input type="number" placeholder="No limit" class="input-field" id="filter-search-budget" oninput="runCatalogFilter()">
+            </div>
+
+            <div style="display: flex; align-items: flex-end; padding-bottom: 1.25rem;">
+              <button class="btn btn-outline" style="width: 100%; height: 38px;" onclick="resetCatalogFilters()">Reset Filters</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Grid -->
+        <div class="product-grid" id="catalog-products-grid"></div>
+      </section>
+
+      <!-- 3. PRODUCT DETAILS PAGE -->
+      <section class="app-page" id="page-detail">
+        <button class="btn btn-outline" style="margin-bottom: 1.25rem;" onclick="switchPage('search')">
+          <i data-lucide="play" style="width: 12px; height: 12px; transform: rotate(180deg);"></i>
+          <span>Back to Catalog</span>
+        </button>
+
+        <!-- Main specs block -->
+        <div class="glass-card" style="padding: 1.5rem; display: flex; gap: 2rem; flex-wrap: wrap; margin-bottom: 2rem;" id="detail-card-container"></div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 2rem; align-items: stretch;" id="detail-charts-row"></div>
+
+        <div class="glass-card" style="padding: 1.5rem; margin-bottom: 2rem;" id="detail-reviews-container"></div>
+      </section>
+
+      <!-- 4. COMPARISON MATRIX PAGE -->
+      <section class="app-page" id="page-compare">
+        <div style="margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <h1 style="font-size: 2rem; font-weight: 800;">Specs Comparison Matrix</h1>
+            <p style="color: var(--text-secondary); font-size: 0.9rem;">Side-by-side matrices comparing specs, reviews ratios, and AI scores.</p>
+          </div>
+          <button class="btn btn-outline" style="color: var(--color-danger);" onclick="clearCompareMatrix()">Clear Matrix</button>
+        </div>
+
+        <div class="compare-wrapper" id="compare-matrix-box"></div>
+        <div id="compare-value-report"></div>
+      </section>
+
+      <!-- 5. AI CHATBOT INTERFACE -->
+      <section class="app-page" id="page-chat">
+        <div style="margin-bottom: 1.5rem;">
+          <h1 style="font-size: 2rem; font-weight: 800;">Shopping Chat Assistant</h1>
+          <p style="color: var(--text-secondary); font-size: 0.9rem;">Heuristic local NLP query analyzer providing recommendations.</p>
+        </div>
+
+        <div class="glass-card chat-wrapper">
+          <div class="chat-box" id="chatbot-messages-area"></div>
+          
+          <div style="padding: 1rem; border-top: 1px solid var(--border-color);">
+            <div class="chat-input-row">
+              <input type="text" placeholder="Ask AI: 'Laptop below 150000' or 'Compare flagships'..." id="chatbot-input-field" onkeydown="if(event.key === 'Enter') handleChatInputSubmit()">
+              <button class="btn btn-primary btn-icon" onclick="handleChatInputSubmit()">
+                <i data-lucide="send" style="width: 16px; height: 16px;"></i>
+              </button>
+            </div>
+            
+            <div class="suggest-prompts" id="chatbot-suggestions-row"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 6. USER PROFILE DASHBOARD -->
+      <section class="app-page" id="page-dashboard">
+        <div style="margin-bottom: 2rem;">
+          <h1 style="font-size: 2rem; font-weight: 800;">My Wishlists & Trackers</h1>
+          <p style="color: var(--text-secondary); font-size: 0.9rem;">Active alerts monitors, notified drops, and saved bookmarks.</p>
+        </div>
+
+        <h3 style="font-size: 1.15rem; margin-bottom: 0.85rem; display: flex; align-items: center; gap: 0.35rem;">
+          <i data-lucide="bell" style="width: 18px; height: 18px; color: var(--color-amazon);"></i>
+          <span>Active Price drop Monitors</span>
+        </h3>
+        <div style="display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 2rem;" id="user-alerts-listing"></div>
+
+        <h3 style="font-size: 1.15rem; margin-bottom: 0.85rem; display: flex; align-items: center; gap: 0.35rem;">
+          <i data-lucide="heart" style="width: 18px; height: 18px; color: var(--color-danger);"></i>
+          <span>Saved Shopping Wishlist</span>
+        </h3>
+        <div class="product-grid" id="user-wishlist-grid"></div>
+      </section>
+
+      <!-- 7. TELEMETRY ADMIN MODULE -->
+      <section class="app-page" id="page-admin">
+        <div style="margin-bottom: 2rem;">
+          <h1 style="font-size: 2rem; font-weight: 800;">Telemetry Admin Console</h1>
+          <p style="color: var(--text-secondary); font-size: 0.9rem;">Verify log streams, check mock API responses, and run sandbox tests.</p>
+        </div>
+
+        <!-- Dev sandbox testing triggers -->
+        <div class="glass-card" style="padding: 1.5rem; margin-bottom: 2rem; border-left: 4px solid var(--color-teal);">
+          <h3 style="font-size: 1.1rem; color: var(--color-teal); margin-bottom: 0.35rem; display: flex; align-items: center; gap: 0.35rem;">
+            <i data-lucide="settings" style="width: 16px; height: 16px;"></i>
+            <span>Developer Sandbox Console</span>
+          </h3>
+          <p style="color: var(--text-secondary); font-size: 0.8rem; margin-bottom: 1.25rem;">
+            Simulate scraper triggers locally! Click below to drop prices on flagship devices below alert thresholds and watch reactive alerts instantly pop up!
+          </p>
+          <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+            <button class="btn btn-primary" onclick="simulatePriceDrop('prod-iphone-15-pro', 15000)">
+              <i data-lucide="play" style="width: 14px; height: 14px;"></i>
+              <span>Drop iPhone Price by ₹15,000</span>
+            </button>
+            <button class="btn btn-primary" style="background: var(--grad-teal); color: #0b0b0f;" onclick="simulatePriceDrop('prod-macbook-air-m3', 10000)">
+              <i data-lucide="play" style="width: 14px; height: 14px;"></i>
+              <span>Drop MacBook Price by ₹10,000</span>
+            </button>
+            <button class="btn btn-outline" onclick="resetSandboxDatabase()">
+              <i data-lucide="refresh-cw" style="width: 14px; height: 14px;"></i>
+              <span>Reset Sandbox Database</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="grid-stats" style="margin-bottom: 2rem;">
+          <div class="glass-card stat-card">
+            <div class="stat-icon"><i data-lucide="activity"></i></div>
+            <div>
+              <span class="stat-title">API Gateway Uptime</span>
+              <div class="stat-val" style="color: var(--color-success);">99.98%</div>
+            </div>
+          </div>
+          <div class="glass-card stat-card">
+            <div class="stat-icon stat-icon-teal"><i data-lucide="activity"></i></div>
+            <div>
+              <span class="stat-title">Telemetry Latency</span>
+              <div class="stat-val" style="color: var(--color-teal);">85ms</div>
+            </div>
+          </div>
+          <div class="glass-card stat-card">
+            <div class="stat-icon" style="background: rgba(16,185,129,0.1); color: var(--color-success);"><i data-lucide="check"></i></div>
+            <div>
+              <span class="stat-title">Rate Limiter Index</span>
+              <div class="stat-val" style="color: var(--color-success);">SECURE OK</div>
+            </div>
+          </div>
+        </div>
+
+        <h3 style="font-size: 1.15rem; margin-bottom: 0.85rem; display: flex; align-items: center; gap: 0.35rem;">
+          <i data-lucide="file-text" style="width: 18px; height: 18px; color: var(--color-amazon);"></i>
+          <span>Live Express Server Action Stream Logs</span>
+        </h3>
+        <div class="console-box" id="admin-logs-console"></div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Unified Application Database & Logic -->
+  <script>
+    // Seeding products DB
+    const INITIAL_PRODUCTS = [
+      {
+        "id": "prod-macbook-air-m3",
+        "name": "Apple 2024 MacBook Air 13-inch Laptop with M3 chip",
+        "brand": "Apple",
+        "category": "Laptops",
+        "price": 104900,
+        "originalPrice": 114900,
+        "rating": 4.7,
+        "reviewsCount": 842,
+        "image": "💻",
+        "specs": {
+          "Processor": "Apple M3 Chip (8-core CPU, 10-core GPU)",
+          "RAM": "8GB unified memory",
+          "Storage": "256GB SSD",
+          "Display": "13.6-inch Liquid Retina Display with True Tone",
+          "Battery Life": "Up to 18 hours",
+          "OS": "macOS Sonoma",
+          "Weight": "1.24 kg"
+        },
+        "priceHistory": [
+          {"date": "2025-12", "price": 114900},
+          {"date": "2026-01", "price": 112900},
+          {"date": "2026-02", "price": 109900},
+          {"date": "2026-03", "price": 109900},
+          {"date": "2026-04", "price": 107900},
+          {"date": "2026-05", "price": 104900}
+        ],
+        "reviews": [
+          {"user": "Aarav S.", "rating": 5, "text": "Absolutely incredible battery life. The M3 chip handles all my multitasking flawlessly without heating up. Highly recommended!", "date": "2026-04-12", "sentiment": "positive", "verified": true},
+          {"user": "Rohan D.", "rating": 4, "text": "Super fast, lightweight, and sleek. Wish 16GB RAM was the base standard, but for daily office work and coding, 8GB is sufficient.", "date": "2026-05-02", "sentiment": "positive", "verified": true},
+          {"user": "Priya M.", "rating": 5, "text": "Beautiful screen and silent typing. Best student laptop money can buy. Travel companion forever.", "date": "2026-05-10", "sentiment": "positive", "verified": true},
+          {"user": "Vikram K.", "rating": 3, "text": "The laptop is amazing, but getting only 256GB storage at this premium price is a bit restrictive.", "date": "2026-05-18", "sentiment": "negative", "verified": false}
+        ],
+        "pros": [
+          "Outstanding M3 performance",
+          "Stunning fanless, completely silent design",
+          "Exceptional battery life (up to 18 hours)",
+          "Vibrant Liquid Retina screen"
+        ],
+        "cons": [
+          "Base model only has 8GB RAM",
+          "256GB storage is low for content creators",
+          "Limited port selection (only 2 Thunderbolt ports)"
+        ],
+        "sentimentAnalysis": {
+          "positive": 88,
+          "negative": 8,
+          "neutral": 4,
+          "fakeReviewProbability": 12,
+          "keywordCloud": [
+            {"text": "battery", "value": 85},
+            {"text": "silent", "value": 60},
+            {"text": "lightweight", "value": 55},
+            {"text": "M3 performance", "value": 75},
+            {"text": "expensive", "value": 30},
+            {"text": "8GB RAM", "value": 40}
+          ]
+        }
+      },
+      {
+        "id": "prod-asus-zephyrus-g14",
+        "name": "ASUS ROG Zephyrus G14 Gaming Laptop",
+        "brand": "ASUS",
+        "category": "Laptops",
+        "price": 149990,
+        "originalPrice": 174990,
+        "rating": 4.5,
+        "reviewsCount": 421,
+        "image": "🎮",
+        "specs": {
+          "Processor": "AMD Ryzen 7 8845HS (8 Cores, 16 Threads)",
+          "Graphics": "NVIDIA GeForce RTX 4060 8GB GDDR6",
+          "RAM": "16GB LPDDR5X (Dual Channel)",
+          "Storage": "512GB PCIe 4.0 NVMe M.2 SSD",
+          "Display": "14-inch ROG Nebula OLED QHD+ 120Hz",
+          "Battery Life": "Up to 8 hours (Eco mode)",
+          "OS": "Windows 11 Home",
+          "Weight": "1.50 kg"
+        },
+        "priceHistory": [
+          {"date": "2025-12", "price": 174990},
+          {"date": "2026-01", "price": 169990},
+          {"date": "2026-02", "price": 164990},
+          {"date": "2026-03", "price": 159990},
+          {"date": "2026-04", "price": 154990},
+          {"date": "2026-05", "price": 149990}
+        ],
+        "reviews": [
+          {"user": "Rohan P.", "rating": 5, "text": "The OLED display is jaw-dropping! Games like Cyberpunk look unbelievably vivid. Compact and super powerful.", "date": "2026-04-18", "sentiment": "positive", "verified": true},
+          {"user": "Nisha G.", "rating": 4, "text": "Runs hot during long AAA gaming sessions, but fan profiles in Armoury Crate help. The thin chassis is great for carrying to work.", "date": "2026-04-29", "sentiment": "neutral", "verified": true},
+          {"user": "Rajesh T.", "rating": 5, "text": "Best compact gaming machine ever. Excellent keyboard and surprisingly loud speakers.", "date": "2026-05-11", "sentiment": "positive", "verified": true},
+          {"user": "Abhishek L.", "rating": 2, "text": "Defective unit arrived with a stuck pixel. Replacing it took 10 days. Performance is okay but support could be better.", "date": "2026-05-15", "sentiment": "negative", "verified": false}
+        ],
+        "pros": [
+          "Incredible 120Hz OLED screen",
+          "Remarkably portable for a gaming laptop",
+          "Strong gaming performance on high settings",
+          "Premium aluminum build quality"
+        ],
+        "cons": [
+          "Chassis gets quite hot under load",
+          "Fan noise is loud in Turbo mode",
+          "Soldered memory limit expansion"
+        ],
+        "sentimentAnalysis": {
+          "positive": 80,
+          "negative": 12,
+          "neutral": 8,
+          "fakeReviewProbability": 18,
+          "keywordCloud": [
+            {"text": "OLED screen", "value": 90},
+            {"text": "gaming performance", "value": 85},
+            {"text": "runs hot", "value": 65},
+            {"text": "portable", "value": 50},
+            {"text": "loud fans", "value": 55}
+          ]
+        }
+      },
+      {
+        "id": "prod-iphone-15-pro",
+        "name": "Apple iPhone 15 Pro Max (256 GB, Natural Titanium)",
+        "brand": "Apple",
+        "category": "Mobile",
+        "price": 148900,
+        "originalPrice": 159900,
+        "rating": 4.8,
+        "reviewsCount": 1250,
+        "image": "📱",
+        "specs": {
+          "Processor": "A17 Pro chip with 6-core GPU",
+          "Camera": "48MP Main, 12MP Ultra Wide, 12MP 5x Telephoto",
+          "Display": "6.7-inch Super Retina XDR with ProMotion",
+          "Storage": "256GB",
+          "Battery Life": "Up to 29 hours video playback",
+          "Connector": "USB-C (supports USB 3)",
+          "Weight": "221 g"
+        },
+        "priceHistory": [
+          {"date": "2025-12", "price": 159900},
+          {"date": "2026-01", "price": 156900},
+          {"date": "2026-02", "price": 154900},
+          {"date": "2026-03", "price": 152900},
+          {"date": "2026-04", "price": 149900},
+          {"date": "2026-05", "price": 148900}
+        ],
+        "reviews": [
+          {"user": "Kabir J.", "rating": 5, "text": "The camera zoom is stunning. The 5x optical telephoto takes beautiful photos of nature. Titanium build feels super premium and lightweight.", "date": "2026-03-22", "sentiment": "positive", "verified": true},
+          {"user": "Sneha R.", "rating": 5, "text": "Best battery life on an iPhone yet. I easily get 1.5 days on a single charge. Custom action button is actually useful.", "date": "2026-04-10", "sentiment": "positive", "verified": true},
+          {"user": "Aditya P.", "rating": 4, "text": "Expensive but worth it if you appreciate premium cameras and screens. USB-C makes charging everything with one cable so easy.", "date": "2026-05-01", "sentiment": "positive", "verified": true},
+          {"user": "Gaurav H.", "rating": 2, "text": "Getting too hot while charging. Also, the natural titanium finish scratches easily on the edges. Dissatisfied given the extreme price.", "date": "2026-05-14", "sentiment": "negative", "verified": true}
+        ],
+        "pros": [
+          "Stunning 5x Telephoto optical zoom",
+          "Durable, lightweight titanium frame",
+          "Superb A17 Pro performance for gaming",
+          "Convenient USB-C port addition"
+        ],
+        "cons": [
+          "Extremely expensive",
+          "Slow out-of-box charging speed limit",
+          "No charging brick included in box"
+        ],
+        "sentimentAnalysis": {
+          "positive": 92,
+          "negative": 6,
+          "neutral": 2,
+          "fakeReviewProbability": 8,
+          "keywordCloud": [
+            {"text": "camera zoom", "value": 95},
+            {"text": "titanium", "value": 80},
+            {"text": "USB-C", "value": 70},
+            {"text": "battery king", "value": 85},
+            {"text": "expensive", "value": 50},
+            {"text": "heats up", "value": 25}
+          ]
+        }
+      },
+      {
+        "id": "prod-samsung-s24-ultra",
+        "name": "Samsung Galaxy S24 Ultra (256 GB, Titanium Gray)",
+        "brand": "Samsung",
+        "category": "Mobile",
+        "price": 129999,
+        "originalPrice": 139999,
+        "rating": 4.7,
+        "reviewsCount": 980,
+        "image": "🤖",
+        "specs": {
+          "Processor": "Snapdragon 8 Gen 3 for Galaxy",
+          "Camera": "200MP Main, 50MP Periscope, 12MP Ultra Wide, 10MP Tele",
+          "Display": "6.8-inch Dynamic AMOLED 2X, QHD+, 120Hz, Flat Screen",
+          "Storage": "256GB",
+          "Battery Life": "5000 mAh with 45W fast charge",
+          "S-Pen": "Included inside chassis",
+          "Weight": "232 g"
+        },
+        "priceHistory": [
+          {"date": "2025-12", "price": 139999},
+          {"date": "2026-01", "price": 136999},
+          {"date": "2026-02", "price": 134999},
+          {"date": "2026-03", "price": 132999},
+          {"date": "2026-04", "price": 130999},
+          {"date": "2026-05", "price": 129999}
+        ],
+        "reviews": [
+          {"user": "Divya N.", "rating": 5, "text": "The Galaxy AI tools are brilliant! I love the Circle to Search and live translation features. S-Pen is extremely useful for annotations.", "date": "2026-04-05", "sentiment": "positive", "verified": true},
+          {"user": "Kunal B.", "rating": 5, "text": "The anti-reflective glass screen is amazing. In bright daylight, you can read the screen perfectly with zero glare. Camera zoom is insane.", "date": "2026-04-20", "sentiment": "positive", "verified": true},
+          {"user": "Mohit S.", "rating": 4, "text": "Performance is lightning fast. Battery lasts all day long. Wish Samsung included the charger in the box.", "date": "2026-05-08", "sentiment": "positive", "verified": true},
+          {"user": "Ananya P.", "rating": 3, "text": "The flat screen is a nice upgrade, but the phone feels very bulky and heavy in hand. The 200MP camera is good, but portraits sometimes look pale.", "date": "2026-05-19", "sentiment": "neutral", "verified": false}
+        ],
+        "pros": [
+          "Stunning anti-reflective glass display",
+          "Practical built-in S-Pen stylus functionality",
+          "Excellent AI features (Circle to Search, Live Translate)",
+          "Unparalleled 200MP main camera details"
+        ],
+        "cons": [
+          "Large and heavy to hold (232 g)",
+          "Slightly oversaturated colors in some photos",
+          "No 45W charger in retail package"
+        ],
+        "sentimentAnalysis": {
+          "positive": 89,
+          "negative": 7,
+          "neutral": 4,
+          "fakeReviewProbability": 10,
+          "keywordCloud": [
+            {"text": "Galaxy AI", "value": 90},
+            {"text": "S-Pen", "value": 75},
+            {"text": "no glare screen", "value": 85},
+            {"text": "200MP camera", "value": 80},
+            {"text": "heavy phone", "value": 45}
+          ]
+        }
+      },
+      {
+        "id": "prod-cerave-cleanser",
+        "name": "CeraVe Hydrating Facial Cleanser for Normal to Dry Skin",
+        "brand": "CeraVe",
+        "category": "Skincare",
+        "price": 1250,
+        "originalPrice": 1450,
+        "rating": 4.6,
+        "reviewsCount": 3500,
+        "image": "🧴",
+        "specs": {
+          "Skin Type": "Normal, Dry, Sensitive Skin",
+          "Volume": "473 ml",
+          "Key Ingredients": "Ceramides (1, 3, 6-II), Hyaluronic Acid, Glycerin",
+          "Texture": "Non-foaming cream gel",
+          "Benefits": "Cleanses, hydrates, restores skin barrier",
+          "Fragrance": "100% Fragrance-Free"
+        },
+        "priceHistory": [
+          {"date": "2025-12", "price": 1450},
+          {"date": "2026-01", "price": 1400},
+          {"date": "2026-02", "price": 1350},
+          {"date": "2026-03", "price": 1350},
+          {"date": "2026-04", "price": 1290},
+          {"date": "2026-05", "price": 1250}
+        ],
+        "reviews": [
+          {"user": "Meera G.", "rating": 5, "text": "Absolute holy grail for dry skin. My skin doesn't feel tight or stripped after washing. It feels soft and hydrated.", "date": "2026-03-15", "sentiment": "positive", "verified": true},
+          {"user": "Ritu K.", "rating": 5, "text": "Recommended by my dermatologist and it works miracles. Excellent for eczema-prone sensitive skin. Huge bottle lasts forever.", "date": "2026-04-22", "sentiment": "positive", "verified": true},
+          {"user": "Siddharth V.", "rating": 4, "text": "Very gentle cleanser. It doesn't foam, which feels weird at first, but it does clean thoroughly. Great for winter seasons.", "date": "2026-05-05", "sentiment": "positive", "verified": true},
+          {"user": "Nisha S.", "rating": 2, "text": "Didn't clean heavy makeup at all. Left a slimy film on my face. Made me break out with small whiteheads after three days.", "date": "2026-05-16", "sentiment": "negative", "verified": true}
+        ],
+        "pros": [
+          "Extremely gentle, non-stripping formula",
+          "Contains skin-restoring ceramides",
+          "Great value for money (large 473ml bottle)",
+          "Fragrance-free and hypoallergenic"
+        ],
+        "cons": [
+          "Does not foam (might feel strange at first)",
+          "Not effective at removing waterproof makeup",
+          "Pump dispenser can sometimes leak in transit"
+        ],
+        "sentimentAnalysis": {
+          "positive": 85,
+          "negative": 10,
+          "neutral": 5,
+          "fakeReviewProbability": 5,
+          "keywordCloud": [
+            {"text": "dry skin", "value": 95},
+            {"text": "gentle cleanser", "value": 85},
+            {"text": "dermatologist", "value": 60},
+            {"text": "non-foaming", "value": 70},
+            {"text": "no fragrance", "value": 50},
+            {"text": "slimy film", "value": 15}
+          ]
+        }
+      },
+      {
+        "id": "prod-ordinary-niacinamide",
+        "name": "The Ordinary Niacinamide 10% + Zinc 1% Serum",
+        "brand": "The Ordinary",
+        "category": "Skincare",
+        "price": 850,
+        "originalPrice": 950,
+        "rating": 4.4,
+        "reviewsCount": 5120,
+        "image": "🧪",
+        "specs": {
+          "Skin Type": "Oily, Combination, Acne-Prone Skin",
+          "Volume": "30 ml",
+          "Key Ingredients": "Niacinamide (Vitamin B3) 10%, Zinc PCA 1%",
+          "Texture": "Lightweight water-based gel serum",
+          "Benefits": "Regulates sebum, reduces pores, blemishes, and dark spots",
+          "pH Level": "5.5 - 6.5"
+        },
+        "priceHistory": [
+          {"date": "2025-12", "price": 950},
+          {"date": "2026-01", "price": 950},
+          {"date": "2026-02", "price": 900},
+          {"date": "2026-03", "price": 890},
+          {"date": "2026-04", "price": 850},
+          {"date": "2026-05", "price": 850}
+        ],
+        "reviews": [
+          {"user": "Tanya C.", "rating": 5, "text": "This completely cleared up my stubborn chin acne and reduced my oily T-zone shine. Best budget serum on the market.", "date": "2026-04-12", "sentiment": "positive", "verified": true},
+          {"user": "Deepak R.", "rating": 4, "text": "Good serum for oil control. My face looks less greasy in the afternoon. Can pill slightly if you apply too many layers of moisturizer over it.", "date": "2026-04-30", "sentiment": "neutral", "verified": true},
+          {"user": "Pooja W.", "rating": 5, "text": "Helped fade my dark spots from acne scars within a month. Dropper is easy to use. Buying my third bottle.", "date": "2026-05-09", "sentiment": "positive", "verified": true},
+          {"user": "Arjun F.", "rating": 1, "text": "Gave me severe chemical burns and painful cystic breakouts. 10% is too high a concentration for sensitive skin. Beware!", "date": "2026-05-18", "sentiment": "negative", "verified": true}
+        ],
+        "pros": [
+          "Excellent oil and sebum regulation",
+          "Fades dark acne spots effectively",
+          "Highly affordable skincare item",
+          "Simple, transparent clean formula"
+        ],
+        "cons": [
+          "Can cause skin purging in initial weeks",
+          "Sticky texture if applied too heavily",
+          "May pill under certain sunscreens or makeup"
+        ],
+        "sentimentAnalysis": {
+          "positive": 78,
+          "negative": 15,
+          "neutral": 7,
+          "fakeReviewProbability": 22,
+          "keywordCloud": [
+            {"text": "oil control", "value": 90},
+            {"text": "acne scars", "value": 80},
+            {"text": "affordable", "value": 75},
+            {"text": "pilling", "value": 40},
+            {"text": "purging breakout", "value": 35}
+          ]
+        }
+      },
+      {
+        "id": "prod-echo-dot",
+        "name": "Amazon Echo Dot (5th Gen) Smart Speaker with Alexa",
+        "brand": "Amazon",
+        "category": "Smart Home",
+        "price": 4499,
+        "originalPrice": 5499,
+        "rating": 4.5,
+        "reviewsCount": 1820,
+        "image": "🗣️",
+        "specs": {
+          "Speaker Size": "1.73-inch front-firing speaker",
+          "Voice Assistant": "Alexa Built-in",
+          "Connectivity": "Wi-Fi (Dual-band), Bluetooth LE, Matter compatible",
+          "Sensors": "Temperature Sensor, Motion Detection",
+          "Privacy": "Mic-off button, voice history controls",
+          "Weight": "304 g"
+        },
+        "priceHistory": [
+          {"date": "2025-12", "price": 5499},
+          {"date": "2026-01", "price": 4999},
+          {"date": "2026-02", "price": 4999},
+          {"date": "2026-03", "price": 4499},
+          {"date": "2026-04", "price": 4499},
+          {"date": "2026-05", "price": 4499}
+        ],
+        "reviews": [
+          {"user": "Shyam K.", "rating": 5, "text": "Significant audio improvement compared to Gen 3. The bass is actually deep and clear now. Temperature sensor controls my smart AC trigger.", "date": "2026-04-14", "sentiment": "positive", "verified": true},
+          {"user": "Preeti A.", "rating": 4, "text": "Very convenient voice assistant. Set alarms, play Spotify, and control hue lights. Alexa sometimes misunderstand commands if music is too loud.", "date": "2026-05-02", "sentiment": "neutral", "verified": true},
+          {"user": "Varun M.", "rating": 5, "text": "Perfect smart bedside companion. Love the LED dot clock display (I got the clock edition). Thermometer sensor is surprisingly accurate.", "date": "2026-05-12", "sentiment": "positive", "verified": true},
+          {"user": "Jatin S.", "rating": 2, "text": "Constantly disconnects from Wi-Fi. Have to restart it every two days. Extremely annoying issue that didn't happen in older versions.", "date": "2026-05-17", "sentiment": "negative", "verified": true}
+        ],
+        "pros": [
+          "Improved richer sound and bass quality",
+          "Built-in indoor temperature & motion sensors",
+          "Seamless Matter protocol smart-home integrations",
+          "Compact, aesthetically pleasing design"
+        ],
+        "cons": [
+          "No 3.5mm audio line-out port (present in Gen 4)",
+          "Alexa voice engine needs stable Wi-Fi connection",
+          "Can fail to pick up commands in noisy environments"
+        ],
+        "sentimentAnalysis": {
+          "positive": 83,
+          "negative": 11,
+          "neutral": 6,
+          "fakeReviewProbability": 15,
+          "keywordCloud": [
+            {"text": "deep bass", "value": 85},
+            {"text": "temperature sensor", "value": 70},
+            {"text": "smart home", "value": 80},
+            {"text": "wi-fi drop", "value": 30},
+            {"text": "alexa", "value": 65}
+          ]
+        }
+      }
+    ];
+
+    // Local Storage Database Management
+    let products = JSON.parse(localStorage.getItem('amz_sandbox_products')) || [...INITIAL_PRODUCTS];
+    let wishlistIds = JSON.parse(localStorage.getItem('amz_sandbox_wishlist')) || ['prod-macbook-air-m3', 'prod-cerave-cleanser'];
+    let priceAlerts = JSON.parse(localStorage.getItem('amz_sandbox_alerts')) || [
+      { id: 'al-1', productId: 'prod-iphone-15-pro', targetPrice: 145000, notified: false }
+    ];
+    let activityLogs = JSON.parse(localStorage.getItem('amz_sandbox_logs')) || [
+      { id: 'log-1', timestamp: new Date().toISOString(), type: 'System', message: 'Amazon Shopping Assistant Sandbox initialized' },
+      { id: 'log-2', timestamp: new Date().toISOString(), type: 'API', message: 'RapidAPI Gateway response speed checked: 85ms' },
+      { id: 'log-3', timestamp: new Date().toISOString(), type: 'Alert', message: 'Telemetry price monitoring cron is online' }
+    ];
+    let compareMatrix = [];
+
+    // Save helpers
+    function saveSandbox() {
+      localStorage.setItem('amz_sandbox_products', JSON.stringify(products));
+      localStorage.setItem('amz_sandbox_wishlist', JSON.stringify(wishlistIds));
+      localStorage.setItem('amz_sandbox_alerts', JSON.stringify(priceAlerts));
+      localStorage.setItem('amz_sandbox_logs', JSON.stringify(activityLogs));
+      updateCompareBadge();
+    }
+
+    function addLog(type, message) {
+      const newLog = {
+        id: `log-${Date.now()}`,
+        timestamp: new Date().toISOString(),
+        type,
+        message
+      };
+      activityLogs.unshift(newLog);
+      if (activityLogs.length > 50) activityLogs.pop();
+      saveSandbox();
+      renderAdminLogs();
+    }
+
+    // Toast Notification System
+    function pushToast(title, message, type = 'warning') {
+      const drawer = document.getElementById('global-toast-drawer');
+      const id = `t-${Date.now()}`;
+      
+      const box = document.createElement('div');
+      box.className = `toast-alert ${type === 'success' ? 'toast-alert-teal' : ''}`;
+      box.id = id;
+      
+      box.innerHTML = `
+        <span style="font-size: 1.25rem;">${type==='success'?'🎯':'⚠️'}</span>
+        <div>
+          <h4 style="font-weight: 700; font-size: 0.85rem;">${title}</h4>
+          <p style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 0.15rem;">${message}</p>
+        </div>
+        <button class="toast-close" onclick="document.getElementById('${id}').remove()">
+          <i data-lucide="x" style="width: 14px; height: 14px;"></i>
+        </button>
+      `;
+      drawer.appendChild(box);
+      lucide.createIcons();
+
+      // Auto dismiss
+      setTimeout(() => {
+        const el = document.getElementById(id);
+        if (el) el.remove();
+      }, 5000);
+    }
+
+    // Router SPA Page Switcher
+    function switchPage(pageId) {
+      document.querySelectorAll('.app-page').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.app-sidebar button').forEach(b => b.classList.remove('active-nav-btn'));
+      
+      const activeEl = document.getElementById(`page-${pageId}`);
+      if (activeEl) activeEl.classList.add('active');
+
+      const navBtn = document.getElementById(`side-nav-${pageId}`);
+      if (navBtn) navBtn.classList.add('active-nav-btn');
+
+      addLog('API', `Page route changed to: #${pageId}`);
+      
+      // Page specific renders
+      if (pageId === 'home') renderDealsPage();
+      else if (pageId === 'search') renderSearchCatalog();
+      else if (pageId === 'compare') renderComparisonMatrix();
+      else if (pageId === 'dashboard') renderDashboardPage();
+      else if (pageId === 'admin') {
+        renderAdminStats();
+        renderAdminLogs();
+      }
+    }
+
+    // RENDER: DEALS PAGE
+    function renderDealsPage() {
+      const grid = document.getElementById('home-deals-grid');
+      grid.innerHTML = '';
+      
+      products.slice(0, 4).map(prod => {
+        const disc = Math.round((1 - prod.price/prod.originalPrice)*100);
+        const card = document.createElement('div');
+        card.className = 'glass-card product-card';
+        card.innerHTML = `
+          <div class="prod-img">
+            <span>${prod.image}</span>
+            <span class="prod-tag">-${disc}% OFF</span>
+          </div>
+          <div class="prod-details">
+            <span class="prod-cat">${prod.category}</span>
+            <h4 class="prod-name" title="${prod.name}">${prod.name}</h4>
+            <div class="stars-row">
+              <span style="color:#ffb800; font-weight:700;">★ ${prod.rating}</span>
+              <span style="color:var(--text-muted);">(${prod.reviewsCount} customer reviews)</span>
+            </div>
+            <div class="price-row">
+              <span class="curr-price">₹${prod.price.toLocaleString()}</span>
+              <span class="orig-price">₹${prod.originalPrice.toLocaleString()}</span>
+            </div>
+            <div style="display:flex; gap:0.35rem; margin-top:auto;">
+              <button class="btn btn-outline" style="flex:1; padding:0.4rem;" onclick="viewDetails('${prod.id}')">Details</button>
+              <button class="btn btn-outline btn-icon ${wishlistIds.includes(prod.id)?'active-nav-btn':''}" onclick="toggleWishlist('${prod.id}')">
+                <i data-lucide="heart" style="width: 15px; height:15px;"></i>
+              </button>
+              <button class="btn btn-outline btn-icon ${compareMatrix.includes(prod.id)?'active-nav-btn':''}" onclick="toggleCompareMatrix('${prod.id}')">
+                <i data-lucide="arrow-left-right" style="width: 15px; height:15px;"></i>
+              </button>
+            </div>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+      lucide.createIcons();
+    }
+
+    // RENDER: PRODUCT SEARCH CATALOG
+    function renderSearchCatalog(filteredProds = products) {
+      const grid = document.getElementById('catalog-products-grid');
+      grid.innerHTML = '';
+
+      if (filteredProds.length === 0) {
+        grid.innerHTML = `
+          <div class="glass-card" style="grid-column: 1/-1; padding: 3rem; text-align: center;">
+            <p style="color: var(--text-secondary); margin-bottom: 1rem;">No matching catalog items found.</p>
+            <button class="btn btn-primary" onclick="resetCatalogFilters()">Reset Filters</button>
+          </div>
+        `;
+        return;
+      }
+
+      filteredProds.map(prod => {
+        const disc = Math.round((1 - prod.price/prod.originalPrice)*100);
+        const card = document.createElement('div');
+        card.className = 'glass-card product-card';
+        card.innerHTML = `
+          <div class="prod-img">
+            <span>${prod.image}</span>
+            <span class="prod-tag">-${disc}%</span>
+          </div>
+          <div class="prod-details">
+            <span class="prod-cat">${prod.category}</span>
+            <h4 class="prod-name" title="${prod.name}">${prod.name}</h4>
+            <div class="stars-row">
+              <span style="color:#ffb800; font-weight:700;">★ ${prod.rating}</span>
+              <span style="color:var(--text-secondary);">(${prod.reviewsCount})</span>
+            </div>
+            <div class="price-row">
+              <span class="curr-price">₹${prod.price.toLocaleString()}</span>
+              <span class="orig-price">₹${prod.originalPrice.toLocaleString()}</span>
+            </div>
+            <div style="display:flex; gap:0.35rem; margin-top:auto;">
+              <button class="btn btn-outline" style="flex:1; padding:0.4rem;" onclick="viewDetails('${prod.id}')">Details</button>
+              <button class="btn btn-outline btn-icon ${wishlistIds.includes(prod.id)?'active-nav-btn':''}" onclick="toggleWishlist('${prod.id}')">
+                <i data-lucide="heart" style="width: 15px; height:15px;"></i>
+              </button>
+              <button class="btn btn-outline btn-icon ${compareMatrix.includes(prod.id)?'active-nav-btn':''}" onclick="toggleCompareMatrix('${prod.id}')">
+                <i data-lucide="arrow-left-right" style="width: 15px; height:15px;"></i>
+              </button>
+            </div>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+      lucide.createIcons();
+    }
+
+    function runCatalogFilter() {
+      const cat = document.getElementById('filter-search-category').value;
+      const sort = document.getElementById('filter-search-sort').value;
+      const budget = Number(document.getElementById('filter-search-budget').value) || Infinity;
+
+      let filtered = products.filter(p => {
+        if (cat && p.category !== cat) return false;
+        if (p.price > budget) return false;
+        return true;
+      });
+
+      if (sort === 'rating') filtered.sort((a,b)=>b.rating - a.rating);
+      else if (sort === 'reviews') filtered.sort((a,b)=>b.reviewsCount - a.reviewsCount);
+      else if (sort === 'price-low') filtered.sort((a,b)=>a.price - b.price);
+      else if (sort === 'price-high') filtered.sort((a,b)=>b.price - a.price);
+
+      renderSearchCatalog(filtered);
+    }
+
+    function resetCatalogFilters() {
+      document.getElementById('filter-search-category').value = '';
+      document.getElementById('filter-search-sort').value = 'rating';
+      document.getElementById('filter-search-budget').value = '';
+      renderSearchCatalog(products);
+    }
+
+    function searchByCategory(cat) {
+      switchPage('search');
+      document.getElementById('filter-search-category').value = cat;
+      runCatalogFilter();
+    }
+
+    function executeGlobalSearch() {
+      const term = document.getElementById('global-search-input').value.toLowerCase().trim();
+      switchPage('search');
+      let filtered = products.filter(p => p.name.toLowerCase().includes(term) || p.brand.toLowerCase().includes(term));
+      renderSearchCatalog(filtered);
+      addLog('API', `Catalog query search performed: "${term}"`);
+    }
+
+    // RENDER: PRODUCT DETAILS PAGE
+    function viewDetails(productId) {
+      const prod = products.find(p => p.id === productId);
+      if (!prod) return;
+      
+      switchPage('detail');
+      
+      const disc = Math.round((1 - prod.price/prod.originalPrice)*100);
+      const savings = prod.originalPrice - prod.price;
+
+      // Render top core container
+      const container = document.getElementById('detail-card-container');
+      container.innerHTML = `
+        <div class="glass-card" style="width: 250px; height: 250px; display:flex; align-items:center; justify-content:center; font-size:6.5rem; background:var(--bg-input);">
+          ${prod.image}
+        </div>
+        <div style="flex:1; min-width:300px;">
+          <span style="font-size:0.75rem; color:var(--color-teal); font-weight:700; text-transform:uppercase;">${prod.brand} &bull; ${prod.category}</span>
+          <h2 style="font-size:1.75rem; font-weight:800; margin:0.25rem 0 0.75rem 0; line-height:1.2;">${prod.name}</h2>
+          <div class="stars-row" style="font-size:0.95rem; margin-bottom:1rem;">
+            <span style="color:#ffb800; font-weight:800;">★ ${prod.rating} / 5.0</span>
+            <span style="color:var(--text-secondary);">(${prod.reviewsCount} customer ratings)</span>
+          </div>
+
+          <div style="display:flex; align-items:baseline; gap:0.75rem; margin-bottom:1.5rem;">
+            <span style="font-size:2.2rem; font-weight:900;">₹${prod.price.toLocaleString()}</span>
+            <span style="text-decoration:line-through; color:var(--text-muted);">₹${prod.originalPrice.toLocaleString()}</span>
+            <span style="color:var(--color-success); font-weight:700; font-size:0.95rem;">Save ₹${savings.toLocaleString()} (-${disc}%)</span>
+          </div>
+
+          <!-- Price Tracker Monitor config -->
+          <div class="glass-card" style="padding:1rem; border-color:var(--border-color-glow); background:rgba(255,153,0,0.03);">
+            <h4 style="font-size:0.85rem; font-weight:800; color:var(--color-amazon); margin-bottom:0.35rem; display:flex; align-items:center; gap:0.35rem;">
+              <i data-lucide="bell" style="width:14px; height:14px;"></i>
+              <span>Intelligent Price Tracker</span>
+            </h4>
+            <p style="font-size:0.75rem; color:var(--text-secondary); margin-bottom:0.75rem;">Set a target budget. If vendor discounts occur, we push alerts immediately.</p>
+            <div style="display:flex; gap:0.5rem;">
+              <input type="number" placeholder="Target e.g. ₹${Math.round(prod.price * 0.95)}" class="input-field" style="flex:1; height:38px; padding:0 0.5rem;" id="detail-target-price-alert">
+              <button class="btn btn-primary" onclick="setPriceAlertFromDetails('${prod.id}')">Start Tracking</button>
+            </div>
+          </div>
+
+          <div style="display:flex; gap:0.5rem; margin-top:1rem;">
+            <button class="btn btn-outline ${wishlistIds.includes(prod.id)?'btn-danger':''}" style="flex:1;" onclick="toggleWishlist('${prod.id}'); viewDetails('${prod.id}');">
+              <i data-lucide="heart" style="width:16px; height:16px;"></i>
+              <span>${wishlistIds.includes(prod.id)?'Saved in wishlist':'Add to Wishlist'}</span>
+            </button>
+            <button class="btn btn-outline ${compareMatrix.includes(prod.id)?'btn-teal':''}" style="flex:1;" onclick="toggleCompareMatrix('${prod.id}'); viewDetails('${prod.id}');">
+              <i data-lucide="arrow-left-right" style="width:16px; height:16px;"></i>
+              <span>${compareMatrix.includes(prod.id)?'Compare active':'Compare Matrix'}</span>
+            </button>
+          </div>
+        </div>
+      `;
+
+      // Render Charts specifications Row
+      const chartsRow = document.getElementById('detail-charts-row');
+      chartsRow.innerHTML = `
+        <div class="glass-card" style="padding:1.25rem;">
+          <h3 style="font-size:1rem; font-weight:800; margin-bottom:0.75rem; display:flex; align-items:center; gap:0.35rem;">
+            <i data-lucide="file-text" style="width:16px; height:16px; color:var(--color-teal);"></i>
+            <span>Specs & Attributes</span>
+          </h3>
+          <div style="display:flex; flex-direction:column; gap:0.5rem; font-size:0.8rem;">
+            ${Object.keys(prod.specs).map(key => `
+              <div style="display:flex; border-bottom:1px solid var(--border-color); padding-bottom:0.35rem;">
+                <span style="width:110px; font-weight:700; color:var(--text-secondary);">${key}</span>
+                <span style="flex:1;">${prod.specs[key]}</span>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+
+        <div class="glass-card" style="padding:1.25rem; display:flex; flex-direction:column;">
+          <h3 style="font-size:1rem; font-weight:800; margin-bottom:0.25rem; display:flex; align-items:center; gap:0.35rem;">
+            <i data-lucide="trending-up" style="width:16px; height:16px; color:var(--color-amazon);"></i>
+            <span>6-Month Price Trend Log</span>
+          </h3>
+          <span style="font-size:0.7rem; color:var(--text-muted); margin-bottom:0.75rem;">Automatic scraper logs connecting prices.</span>
+          
+          <div style="flex:1; display:flex; align-items:flex-end; min-height:120px;" id="svg-trend-box">
+            ${renderSVGLines(prod)}
+          </div>
+        </div>
+      `;
+
+      // Render Sentiment details
+      const reviewsBox = document.getElementById('detail-reviews-container');
+      reviewsBox.innerHTML = `
+        <h3 style="font-size:1rem; font-weight:800; margin-bottom:0.25rem; display:flex; align-items:center; gap:0.35rem;">
+          <i data-lucide="activity" style="width:16px; height:16px; color:var(--color-teal);"></i>
+          <span>AI Sentiment & Review Integrity Analyzer</span>
+        </h3>
+        <p style="font-size:0.75rem; color:var(--text-secondary); margin-bottom:1.5rem;">Review integrity verification analyzes repetition loops and verified purchases.</p>
+
+        <div style="display:grid; grid-template-columns:1fr 1.2fr; gap:1.5rem; flex-wrap:wrap;">
+          <div style="display:flex; align-items:center; gap:1rem;">
+            <svg width="120" height="80" viewBox="0 0 160 100">
+              <path d="M 10 90 A 70 70 0 0 1 150 90" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="14" stroke-linecap="round" />
+              <path d="M 10 90 A 70 70 0 0 1 150 90" fill="none" stroke="url(#detailsent)" stroke-width="14" stroke-linecap="round" stroke-dasharray="220" stroke-dashoffset="${220 - (220 * (prod.sentimentAnalysis.positive / 100))}" />
+              <text x="80" y="75" fontSize="22" fontWeight="800" fill="var(--text-primary)" textAnchor="middle">${prod.sentimentAnalysis.positive}%</text>
+              <text x="80" y="92" fontSize="9" fill="var(--text-secondary)" textAnchor="middle">Positive Ratio</text>
+              <defs>
+                <linearGradient id="detailsent" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0%" stopColor="#e94057" />
+                  <stop offset="100%" stopColor="#38ef7d" />
+                </linearGradient>
+              </defs>
+            </svg>
+            <div>
+              <h4 style="font-size:0.85rem; font-weight:700;">Analyzed Highlights</h4>
+              <p style="font-size:0.75rem; color:var(--text-secondary); margin-top:0.25rem;">
+                Fake review integrity: <span style="font-weight:800; color:var(--color-success);">${prod.sentimentAnalysis.fakeReviewProbability}% likelihood</span><br>
+                Positive: ${prod.sentimentAnalysis.positive}% &bull; Negative: ${prod.sentimentAnalysis.negative}%
+              </p>
+            </div>
+          </div>
+
+          <div style="background:rgba(255,255,255,0.01); border:1px solid var(--border-color); padding:0.75rem; border-radius:8px;">
+            <span style="font-size:0.7rem; color:var(--text-secondary); text-transform:uppercase; font-weight:700; display:block; margin-bottom:0.35rem;">Parsed Keywords</span>
+            <div style="display:flex; flex-wrap:wrap; gap:0.35rem;">
+              ${prod.sentimentAnalysis.keywordCloud.slice(0, 5).map(word => `
+                <span style="background:rgba(0,242,254,0.03); border:1px solid rgba(0,242,254,0.1); padding:0.15rem 0.4rem; border-radius:4px; font-size:0.75rem; color:var(--color-teal);">${word.text}</span>
+              `).join('')}
+            </div>
+          </div>
+        </div>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-top:1.5rem;">
+          <div style="background:rgba(16, 185, 129, 0.02); border:1px solid rgba(16,185,129,0.08); border-radius:8px; padding:0.75rem;">
+            <h4 style="color:var(--color-success); font-size:0.8rem; font-weight:700; margin-bottom:0.35rem; display:flex; align-items:center; gap:0.25rem;"><i data-lucide="check" style="width:12px; height:12px;"></i> Pros</h4>
+            <ul style="padding-left:1rem; font-size:0.75rem; color:var(--text-secondary); display:flex; flex-direction:column; gap:0.2rem;">
+              ${prod.pros.map(pro => `<li>${pro}</li>`).join('')}
+            </ul>
+          </div>
+          <div style="background:rgba(239, 68, 68, 0.02); border:1px solid rgba(239,68,68,0.08); border-radius:8px; padding:0.75rem;">
+            <h4 style="color:var(--color-danger); font-size:0.8rem; font-weight:700; margin-bottom:0.35rem; display:flex; align-items:center; gap:0.25rem;"><i data-lucide="x" style="width:12px; height:12px;"></i> Cons</h4>
+            <ul style="padding-left:1rem; font-size:0.75rem; color:var(--text-secondary); display:flex; flex-direction:column; gap:0.2rem;">
+              ${prod.cons.map(con => `<li>${con}</li>`).join('')}
+            </ul>
+          </div>
+        </div>
+
+        <h4 style="font-size:0.9rem; font-weight:700; margin:1.5rem 0 0.75rem 0;">Parsed Customer Review Logs</h4>
+        <div style="display:flex; flex-direction:column; gap:0.75rem;">
+          ${prod.reviews.map(rev => `
+            <div style="border-bottom:1px solid var(--border-color); padding-bottom:0.75rem; font-size:0.8rem;">
+              <div style="display:flex; justify-content:space-between; margin-bottom:0.25rem;">
+                <span style="font-weight:700;">${rev.user} <span style="color:var(--text-muted); font-size:0.7rem;">&bull; ${rev.date}</span></span>
+                <span style="color:#ffb800; font-weight:800;">★ ${rev.rating}</span>
+              </div>
+              <p style="color:var(--text-secondary); line-height:1.4;">&ldquo;${rev.text}&rdquo;</p>
+            </div>
+          `).join('')}
+        </div>
+      `;
+
+      lucide.createIcons();
+    }
+
+    function renderSVGLines(prod) {
+      const prices = prod.priceHistory.map(h => h.price);
+      const maxPrice = Math.max(...prices);
+      const minPrice = Math.min(...prices);
+      const diff = maxPrice - minPrice || 10;
+      
+      const points = prod.priceHistory.map((h, i) => {
+        const x = 30 + (i * 70);
+        const y = 100 - (((h.price - minPrice) / diff) * 75);
+        return { x, y, price: h.price, date: h.date };
+      });
+
+      const pathD = points.map((p, i) => `${i === 0 ? 'M' : 'L'} ${p.x} ${p.y}`).join(' ');
+
+      return `
+        <svg viewBox="0 0 420 120" style="overflow:visible; width:100%; height:100%;">
+          <line x1="20" y1="15" x2="380" y2="15" stroke="rgba(255,255,255,0.02)" />
+          <line x1="20" y1="55" x2="380" y2="55" stroke="rgba(255,255,255,0.02)" />
+          <line x1="20" y1="100" x2="380" y2="100" stroke="rgba(255,255,255,0.07)" />
+          
+          <path d="${pathD}" fill="none" stroke="#ff9900" stroke-width="2.5" />
+          
+          ${points.map(p => `
+            <circle cx="${p.x}" cy="${p.y}" r="3.5" fill="#ff9900" stroke="#fff" stroke-width="1" />
+            <text x="${p.x}" y="${p.y - 8}" font-size="7" font-weight="700" fill="var(--text-primary)" text-anchor="middle">₹${Math.round(p.price/1000)}K</text>
+            <text x="${p.x}" y="112" font-size="7" fill="var(--text-secondary)" text-anchor="middle">${p.date}</text>
+          `).join('')}
+        </svg>
+      `;
+    }
+
+    function setPriceAlertFromDetails(productId) {
+      const input = document.getElementById('detail-target-price-alert');
+      const val = Number(input.value);
+      if (!val || val <= 0) {
+        pushToast("Invalid input", "Please provide a valid price threshold limit.");
+        return;
+      }
+
+      // Check if duplicate
+      const duplicate = priceAlerts.find(a => a.productId === productId && !a.notified);
+      if (duplicate) {
+        duplicate.targetPrice = val;
+      } else {
+        priceAlerts.push({
+          id: `al-${Date.now()}`,
+          productId,
+          targetPrice: val,
+          notified: false
+        });
+      }
+      
+      const prod = products.find(p => p.id === productId);
+      addLog('Alert', `Tracker registered on "${prod.name.substring(0, 18)}..." at target budget of ₹${val}`);
+      pushToast("Tracker Activated", `We will alert you immediately when price drops below ₹${val.toLocaleString()}`, "success");
+      input.value = '';
+      saveSandbox();
+      viewDetails(productId);
+    }
+
+    // Toggle Saved Lists
+    function toggleWishlist(productId) {
+      const idx = wishlistIds.indexOf(productId);
+      if (idx > -1) {
+        wishlistIds.splice(idx, 1);
+        addLog('System', `Product removed from wishlist: ${productId}`);
+        pushToast("Removed Wishlist", "Item removed successfully.");
+      } else {
+        wishlistIds.push(productId);
+        addLog('System', `Product added to wishlist: ${productId}`);
+        pushToast("Saved in Wishlist", "Item added to saved bookmarks successfully.", "success");
+      }
+      saveSandbox();
+      if (document.getElementById('page-home').classList.contains('active')) renderDealsPage();
+      if (document.getElementById('page-search').classList.contains('active')) runCatalogFilter();
+    }
+
+    // Toggle Compare Matrix lists
+    function toggleCompareMatrix(productId) {
+      const idx = compareMatrix.indexOf(productId);
+      if (idx > -1) {
+        compareMatrix.splice(idx, 1);
+        addLog('System', `Removed comparative matrices slot: ${productId}`);
+        pushToast("Matrix updated", "Item removed.");
+      } else {
+        if (compareMatrix.length >= 3) {
+          pushToast("Limit Exceeded", "You can compare up to 3 products at once.");
+          return;
+        }
+        compareMatrix.push(productId);
+        addLog('System', `Added comparative matrix slot: ${productId}`);
+        pushToast("Matrix Activated", "Product added to comparison matrix. Navigate to specs compares screen to view details!", "success");
+      }
+      saveSandbox();
+    }
+
+    function updateCompareBadge() {
+      const badge = document.getElementById('compare-count-badge');
+      if (compareMatrix.length > 0) {
+        badge.innerText = compareMatrix.length;
+        badge.style.display = 'block';
+      } else {
+        badge.style.display = 'none';
+      }
+    }
+
+    // RENDER: COMPARISON SPEC MATRIX
+    function renderComparisonMatrix() {
+      const wrapper = document.getElementById('compare-matrix-box');
+      const valReport = document.getElementById('compare-value-report');
+      
+      wrapper.innerHTML = '';
+      valReport.innerHTML = '';
+
+      if (compareMatrix.length === 0) {
+        wrapper.innerHTML = `
+          <div style="padding:4rem; text-align:center;">
+            <p style="color:var(--text-secondary); margin-bottom:1rem;">Your specs comparison matrix is currently empty.</p>
+            <button class="btn btn-primary" onclick="switchPage('search')">Browse Catalog</button>
+          </div>
+        `;
+        return;
+      }
+
+      const compProds = products.filter(p => compareMatrix.includes(p.id));
+      const allSpecs = Array.from(new Set(compProds.flatMap(p => Object.keys(p.specs))));
+
+      wrapper.innerHTML = `
+        <table class="compare-table">
+          <thead>
+            <tr>
+              <th>Key Attributes</th>
+              ${compProds.map(p => `
+                <td class="compare-header-cell" style="border-left: 1px solid var(--border-color); width:${80/compProds.length}%">
+                  <span style="font-size:2.5rem; display:block; margin-bottom:0.25rem;">${p.image}</span>
+                  <h4 style="font-size:0.95rem; font-weight:800; line-height:1.2;">${p.name}</h4>
+                  <span style="font-size:0.7rem; color:var(--text-secondary); display:block; margin-top:0.15rem;">${p.brand}</span>
+                  <div style="font-size:1.15rem; font-weight:800; margin:0.5rem 0;">₹${p.price.toLocaleString()}</div>
+                  <button class="btn btn-outline" style="padding:0.15rem 0.5rem; font-size:0.7rem; color:var(--color-danger); border-color:transparent;" onclick="removeCompareCell('${p.id}')">Remove</button>
+                </td>
+              `).join('')}
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th>Category</th>
+              ${compProds.map(p => `
+                <td style="border-left:1px solid var(--border-color); font-weight:700; font-size:0.8rem; color:var(--color-teal);">${p.category}</td>
+              `).join('')}
+            </tr>
+            ${allSpecs.map(specKey => `
+              <tr>
+                <th>${specKey}</th>
+                ${compProds.map(p => `
+                  <td style="border-left:1px solid var(--border-color); font-size:0.8rem; color:var(--text-secondary);">${p.specs[specKey] || '<span style="color:var(--text-muted);">N/A</span>'}</td>
+                `).join('')}
+              </tr>
+            `).join('')}
+            <tr>
+              <th>Pros highlights</th>
+              ${compProds.map(p => `
+                <td style="border-left:1px solid var(--border-color); font-size:0.75rem; color:var(--color-success);">
+                  <ul style="padding-left:1rem;">
+                    ${p.pros.slice(0, 3).map(pro => `<li>${pro}</li>`).join('')}
+                  </ul>
+                </td>
+              `).join('')}
+            </tr>
+            <tr>
+              <th>Cons complaints</th>
+              ${compProds.map(p => `
+                <td style="border-left:1px solid var(--border-color); font-size:0.75rem; color:var(--color-danger);">
+                  <ul style="padding-left:1rem;">
+                    ${p.cons.slice(0, 3).map(con => `<li>${con}</li>`).join('')}
+                  </ul>
+                </td>
+              `).join('')}
+            </tr>
+          </tbody>
+        </table>
+      `;
+
+      // Render AI specs reports values
+      valReport.innerHTML = `
+        <div class="glass-card" style="padding:1.5rem;">
+          <h3 style="font-size:1.1rem; font-weight:800; margin-bottom:1rem; display:flex; align-items:center; gap:0.35rem;">
+            <i data-lucide="message-square" style="width:16px; height:16px; color:var(--color-teal);"></i>
+            <span>AI Value Comparison Report</span>
+          </h3>
+          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:1rem;">
+            ${compProds.map(p => `
+              <div style="background:rgba(255,255,255,0.01); border:1px solid var(--border-color); padding:1rem; border-radius:10px; font-size:0.75rem;">
+                <div style="display:flex; align-items:center; gap:0.35rem; margin-bottom:0.5rem;">
+                  <span>${p.image}</span>
+                  <h4 style="font-weight:800;">${p.brand} value score</h4>
+                </div>
+                <div style="display:flex; flex-direction:column; gap:0.5rem;">
+                  <div>
+                    <div style="display:flex; justify-content:space-between; margin-bottom:0.15rem;">
+                      <span>Positive review index</span>
+                      <span>${p.sentimentAnalysis.positive}%</span>
+                    </div>
+                    <div style="height:4px; background:rgba(255,255,255,0.04); border-radius:99px; overflow:hidden;">
+                      <div style="width:${p.sentimentAnalysis.positive}%; height:100%; background:var(--grad-success);"></div>
+                    </div>
+                  </div>
+                  <div>
+                    <div style="display:flex; justify-content:space-between; margin-bottom:0.15rem;">
+                      <span>Verified integrity score</span>
+                      <span>${100 - p.sentimentAnalysis.fakeReviewProbability}%</span>
+                    </div>
+                    <div style="height:4px; background:rgba(255,255,255,0.04); border-radius:99px; overflow:hidden;">
+                      <div style="width:${100 - p.sentimentAnalysis.fakeReviewProbability}%; height:100%; background:var(--grad-teal);"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+      lucide.createIcons();
+    }
+
+    function removeCompareCell(productId) {
+      compareMatrix = compareMatrix.filter(id => id !== productId);
+      saveSandbox();
+      renderComparisonMatrix();
+    }
+
+    function clearCompareMatrix() {
+      compareMatrix = [];
+      saveSandbox();
+      renderComparisonMatrix();
+    }
+
+    // RENDER: USER WISHLIST & ALERTS
+    function renderDashboardPage() {
+      const alertsList = document.getElementById('user-alerts-listing');
+      alertsList.innerHTML = '';
+      
+      const activeAlerts = priceAlerts;
+
+      if (activeAlerts.length === 0) {
+        alertsList.innerHTML = `<div class="glass-card" style="padding:1.5rem; text-align:center; color:var(--text-secondary);">You have no active price alerts configured.</div>`;
+      } else {
+        activeAlerts.map(alert => {
+          const prod = products.find(p => p.id === alert.productId);
+          if (!prod) return;
+
+          const box = document.createElement('div');
+          box.className = 'glass-card';
+          box.style = 'padding:1rem; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:1rem;';
+          if (alert.notified) box.style.borderLeft = '4px solid var(--color-success)';
+
+          box.innerHTML = `
+            <div style="display:flex; align-items:center; gap:0.75rem; flex:1; min-width:200px;">
+              <span style="font-size:2rem;">${prod.image}</span>
+              <div>
+                <h4 style="font-weight:800; font-size:0.9rem;">${prod.name}</h4>
+                <span style="font-size:0.7rem; color:var(--text-secondary);">${prod.category}</span>
+              </div>
+            </div>
+            
+            <div style="display:flex; gap:1.5rem; font-size:0.8rem;">
+              <div>
+                <span style="display:block; font-size:0.7rem; color:var(--text-muted);">Scraped Price</span>
+                <span style="font-weight:800; color:${alert.notified?'var(--color-success)':'var(--text-primary)'}">₹${prod.price.toLocaleString()}</span>
+              </div>
+              <div>
+                <span style="display:block; font-size:0.7rem; color:var(--text-muted);">Target limit</span>
+                <span style="font-weight:800; color:var(--color-amazon)">₹${alert.targetPrice.toLocaleString()}</span>
+              </div>
+              <div>
+                <span style="display:block; font-size:0.7rem; color:var(--text-muted);">Alert Status</span>
+                <span style="font-weight:700; color:${alert.notified?'var(--color-success)':'var(--color-teal)'}">${alert.notified?'Price Reached!':'Active Checks...'}</span>
+              </div>
+            </div>
+
+            <button class="btn btn-outline" style="color:var(--color-danger); padding:0.35rem 0.75rem; font-size:0.75rem;" onclick="deletePriceAlert('${alert.id}')">Delete Tracker</button>
+          `;
+          alertsList.appendChild(box);
+        });
+      }
+
+      // Saved wishlist
+      const wishGrid = document.getElementById('user-wishlist-grid');
+      wishGrid.innerHTML = '';
+
+      const wishProds = products.filter(p => wishlistIds.includes(p.id));
+
+      if (wishProds.length === 0) {
+        wishGrid.innerHTML = `<div class="glass-card" style="grid-column:1/-1; padding:2.5rem; text-align:center; color:var(--text-secondary);">Your saved bookmarks wishlist is empty.</div>`;
+      } else {
+        wishProds.map(prod => {
+          const disc = Math.round((1 - prod.price/prod.originalPrice)*100);
+          const card = document.createElement('div');
+          card.className = 'glass-card product-card';
+          card.innerHTML = `
+            <div class="prod-img">
+              <span>${prod.image}</span>
+              <span class="prod-tag">-${disc}%</span>
+            </div>
+            <div class="prod-details">
+              <span class="prod-cat">${prod.category}</span>
+              <h4 class="prod-name" title="${prod.name}">${prod.name}</h4>
+              <div class="price-row">
+                <span class="curr-price">₹${prod.price.toLocaleString()}</span>
+              </div>
+              <div style="display:flex; gap:0.35rem; margin-top:auto;">
+                <button class="btn btn-outline" style="flex:1; padding:0.4rem;" onclick="viewDetails('${prod.id}')">Details</button>
+                <button class="btn btn-outline btn-icon btn-danger" style="border-color:transparent;" onclick="toggleWishlist('${prod.id}'); renderDashboardPage();">
+                  <i data-lucide="x" style="width: 15px; height:15px;"></i>
+                </button>
+              </div>
+            </div>
+          `;
+          wishGrid.appendChild(card);
+        });
+      }
+      lucide.createIcons();
+    }
+
+    function deletePriceAlert(alertId) {
+      priceAlerts = priceAlerts.filter(a => a.id !== alertId);
+      addLog('Alert', `Tracker deleted: ${alertId}`);
+      pushToast("Tracker Cancelled", "Price tracker monitors disabled.");
+      saveSandbox();
+      renderDashboardPage();
+    }
+
+    // RENDER: TELEMETRY & DEVELOPER ACTION
+    function renderAdminStats() {
+      // Telemetry stats count automatically maps array lengths
+    }
+
+    function renderAdminLogs() {
+      const consoleEl = document.getElementById('admin-logs-console');
+      consoleEl.innerHTML = '';
+
+      activityLogs.map(log => {
+        const line = document.createElement('div');
+        line.className = 'console-line';
+        const tagClass = log.type === 'System' ? 'console-tag-sys' : log.type === 'API' ? 'console-tag-api' : log.type === 'Alert' ? 'console-tag-alr' : 'console-tag-cht';
+        
+        line.innerHTML = `
+          <span class="console-time">[${new Date(log.timestamp).toLocaleTimeString()}]</span>
+          <span class="console-tag ${tagClass}">${log.type.toUpperCase()}</span>
+          <span>${log.message}</span>
+        `;
+        consoleEl.appendChild(line);
+      });
+    }
+
+    // DEVELOPER SIMULATOR TRIGGERS
+    function simulatePriceDrop(productId, discountAmount) {
+      const pIdx = products.findIndex(p => p.id === productId);
+      if (pIdx === -1) return;
+
+      const oldPrice = products[pIdx].price;
+      products[pIdx].price = Math.max(10, oldPrice - discountAmount);
+      
+      addLog('API', `Developer Triggered drop on "${products[pIdx].name.substring(0, 15)}...": ₹${oldPrice} -> ₹${products[pIdx].price}`);
+      
+      // Execute background alert checker synchronously
+      let alertTriggered = false;
+      priceAlerts.forEach(alert => {
+        if (alert.productId === productId && !alert.notified) {
+          if (products[pIdx].price <= alert.targetPrice) {
+            alert.notified = true;
+            alert.notifiedPrice = products[pIdx].price;
+            alertTriggered = true;
+            
+            // Visual achievements!
+            confetti({ particleCount: 80, spread: 80, origin: { y: 0.6 } });
+            pushToast(
+              "🎯 Price Target Reached!",
+              `"${products[pIdx].name.substring(0, 20)}..." dropped to ₹${products[pIdx].price.toLocaleString()}! (Target: ₹${alert.targetPrice.toLocaleString()})`,
+              "success"
+            );
+            addLog('Alert', `PRICE DROP TARGET MET: "${products[pIdx].name.substring(0, 20)}..." has hit target limit!`);
+          }
+        }
+      });
+
+      if (!alertTriggered) {
+        pushToast("Price Dropped", `"${products[pIdx].name.substring(0, 15)}..." price was dropped, but no target thresholds were reached. Try setting a higher alert target value first!`);
+      }
+
+      saveSandbox();
+      if (document.getElementById('page-admin').classList.contains('active')) renderAdminLogs();
+    }
+
+    function resetSandboxDatabase() {
+      products = [...INITIAL_PRODUCTS];
+      wishlistIds = ['prod-macbook-air-m3', 'prod-cerave-cleanser'];
+      priceAlerts = [{ id: 'al-1', productId: 'prod-iphone-15-pro', targetPrice: 145000, notified: false }];
+      activityLogs = [
+        { id: 'log-reset', timestamp: new Date().toISOString(), type: 'System', message: 'All product prices and price drops flags reset' }
+      ];
+      saveSandbox();
+      pushToast("Database Restored", "Pre-seeded products and monitors successfully reset to default metrics.", "success");
+      addLog('System', 'All product values reset to defaults.');
+      if (document.getElementById('page-admin').classList.contains('active')) {
+        renderAdminLogs();
+      }
+    }
+
+    // CHATBOT NLP PARSER LOGIC
+    let chatMessages = [
+      { id: 'msg-start', sender: 'bot', text: "Hello! I am your AI Shopping Companion. 🤖🛍️\n\nI can help you search Amazon products, check price drop histories, compare specs side-by-side, analyze reviews, and find outstanding deals!\n\nTry asking me something like:\n• *'Best gaming laptop under ₹1,50,000'*\n• *'Compare iPhone vs Samsung'*\n• *'Fades dark spots skincare'*", products: [] }
+    ];
+
+    function handleChatInputSubmit() {
+      const input = document.getElementById('chatbot-input-field');
+      const text = input.value.trim();
+      if (!text) return;
+
+      chatMessages.push({ id: `msg-${Date.now()}`, sender: 'user', text });
+      input.value = '';
+      renderChatbotMessages();
+
+      // Typing feedback simulation
+      const loadingId = `msg-loading-${Date.now()}`;
+      chatMessages.push({ id: loadingId, sender: 'bot', text: 'Typing...', typing: true });
+      renderChatbotMessages();
+
+      setTimeout(() => {
+        chatMessages = chatMessages.filter(m => m.id !== loadingId);
+        
+        const response = executeLocalNLP(text);
+        chatMessages.push({
+          id: `msg-reply-${Date.now()}`,
+          sender: 'bot',
+          text: response.reply,
+          products: response.products
+        });
+        
+        addLog('Chat', `AI chatbot query parsed: "${text.substring(0, 25)}..."`);
+        renderChatbotMessages();
+      }, 700);
+    }
+
+    function renderChatbotMessages() {
+      const box = document.getElementById('chatbot-messages-area');
+      box.innerHTML = '';
+
+      chatMessages.map(msg => {
+        const div = document.createElement('div');
+        div.className = `chat-msg ${msg.sender === 'user' ? 'chat-msg-user' : 'chat-msg-bot'}`;
+        div.id = `chat-bubble-${msg.id}`;
+
+        let attachmentHTML = '';
+        if (msg.products && msg.products.length > 0) {
+          attachmentHTML = `
+            <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0.5rem; width: 100%; margin-top: 0.5rem;">
+              ${msg.products.map(p => `
+                <div class="glass-card" style="padding:0.5rem; font-size:0.8rem; display:flex; flex-direction:column; gap:0.25rem;">
+                  <div style="display:flex; gap:0.35rem; align-items:center;">
+                    <span style="font-size:1.5rem;">${p.image}</span>
+                    <div style="overflow:hidden;">
+                      <h4 style="font-weight:700; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${p.name}</h4>
+                      <span style="font-weight:800; color:var(--text-primary);">₹${p.price.toLocaleString()}</span>
+                    </div>
+                  </div>
+                  <div style="display:flex; gap:0.25rem; margin-top:0.25rem;">
+                    <button class="btn btn-outline" style="flex:1; padding:0.1rem; font-size:0.65rem;" onclick="viewDetails('${p.id}')">Details</button>
+                    <button class="btn btn-outline" style="padding:0.1rem 0.35rem;" onclick="toggleCompareMatrix('${p.id}')"><i data-lucide="arrow-left-right" style="width:10px; height:10px;"></i></button>
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          `;
+        }
+
+        div.innerHTML = `
+          <div class="chat-avatar">${msg.sender === 'user'?'👤':'🤖'}</div>
+          <div style="display:flex; flex-direction:column; max-width:85%;">
+            <div class="chat-bubble">
+              ${msg.typing ? `<span style="font-style:italic; color:var(--text-muted);">Thinking...</span>` : msg.text}
+            </div>
+            ${attachmentHTML}
+          </div>
+        `;
+        box.appendChild(div);
+      });
+
+      lucide.createIcons();
+      box.scrollTop = box.scrollHeight;
+    }
+
+    function executeLocalNLP(message) {
+      const cleanMsg = message.toLowerCase();
+      let reply = "";
+      let matchedProds = [];
+
+      // Extract budget number
+      const budgetMatch = cleanMsg.match(/(?:under|below|around|within)\s*(?:rs\.?|inr|₹)?\s*([0-9,]+)/i);
+      let limit = null;
+      if (budgetMatch) {
+        limit = parseInt(budgetMatch[1].replace(/,/g, ''));
+      }
+
+      // Identify categories
+      let category = null;
+      if (cleanMsg.includes('laptop') || cleanMsg.includes('macbook') || cleanMsg.includes('computer')) category = 'Laptops';
+      else if (cleanMsg.includes('phone') || cleanMsg.includes('mobile') || cleanMsg.includes('iphone') || cleanMsg.includes('samsung')) category = 'Mobile';
+      else if (cleanMsg.includes('skin') || cleanMsg.includes('cleanser') || cleanMsg.includes('serum') || cleanMsg.includes('cerave')) category = 'Skincare';
+      else if (cleanMsg.includes('speaker') || cleanMsg.includes('alexa') || cleanMsg.includes('home') || cleanMsg.includes('hue')) category = 'Smart Home';
+
+      if (cleanMsg.includes('compare')) {
+        if (cleanMsg.includes('iphone') && cleanMsg.includes('samsung')) {
+          const iphone = products.find(p => p.id === 'prod-iphone-15-pro');
+          const samsung = products.find(p => p.id === 'prod-samsung-s24-ultra');
+          if (iphone && samsung) {
+            matchedProds = [iphone, samsung];
+            reply = "I've analyzed the specifications of the iPhone 15 Pro Max and Samsung Galaxy S24 Ultra flagships:\n\n1. **Display**: Galaxy features anti-reflective glass screen and S-Pen. The iPhone has Dynamic Island.\n2. **Camera**: Galaxy boasts 200MP detail. The iPhone offers 5x optical telephoto lens captures.\n3. **Performance**: A17 Pro (iPhone) excels in games, Snapdragon Gen 3 (Samsung) handles built-in AI tasks easily.\n\nClick the comparative table or add them directly to Compare specs!";
+          }
+        } else {
+          reply = "I'd love to help you compare items! Try asking: 'Compare iPhone vs Samsung' to see my semantic model in action!";
+        }
+      } else if (cleanMsg.includes('best') || cleanMsg.includes('recommend') || limit || category) {
+        let filterProds = [...products];
+        if (category) filterProds = filterProds.filter(p => p.category === category);
+        if (limit) filterProds = filterProds.filter(p => p.price <= limit);
+
+        filterProds.sort((a,b)=>b.rating - a.rating);
+
+        if (filterProds.length > 0) {
+          matchedProds = filterProds.slice(0, 2);
+          reply = `Here are the top-rated recommendations${category ? ` in ${category}` : ''}${limit ? ` under ₹${limit.toLocaleString()}` : ''}:\n\n${matchedProds.map(p => `- **${p.name}** (₹${p.price.toLocaleString()})`).join('\n')}\n\nYou can inspect details or set target alerts on them directly!`;
+        } else {
+          reply = `I couldn't find any products in our pre-seeded database matching your specific criteria${limit ? ` under ₹${limit.toLocaleString()}` : ''}. Try adjusting the budget limit!`;
+        }
+      } else if (cleanMsg.includes('hello') || cleanMsg.includes('hi') || cleanMsg.includes('hey')) {
+        reply = "Hello! I am your AI Shopping Companion. How can I help you discover deals, check specifications comparisons, or analyze sentiments today?";
+      } else {
+        // Search matches fallback
+        const queryWords = cleanMsg.split(/\s+/).filter(w => w.length > 3);
+        const matched = products.filter(p => queryWords.some(w => p.name.toLowerCase().includes(w) || p.brand.toLowerCase().includes(w)));
+        
+        if (matched.length > 0) {
+          matchedProds = matched.slice(0, 2);
+          reply = `I found these products matching your search criteria in our database. Let me know if you want to inspect details!`;
+        } else {
+          reply = "I'm not completely sure how to answer that request. Try asking something like:\n• 'Recommend laptop under 150000'\n• 'Compare iPhone vs Samsung'\n• 'Gentle cleanser dry skin'";
+        }
+      }
+
+      return { reply, products: matchedProds };
+    }
+
+    function initChatbotSuggestions() {
+      const row = document.getElementById('chatbot-suggestions-row');
+      const prompts = [
+        "Best gaming laptop under ₹1,50,000",
+        "Compare iPhone vs Samsung",
+        "Best skincare for dry skin",
+        "Gentle cleanser under ₹1,500"
+      ];
+      
+      row.innerHTML = prompts.map((p, i) => `
+        <span class="suggest-tag" onclick="submitSuggestedChat('${p}')">${p}</span>
+      `).join('');
+    }
+
+    function submitSuggestedChat(text) {
+      document.getElementById('chatbot-input-field').value = text;
+      handleChatInputSubmit();
+    }
+
+    // ON LOAD INITIALIZATIONS
+    window.onload = function() {
+      lucide.createIcons();
+      renderDealsPage();
+      initChatbotSuggestions();
+      renderChatbotMessages();
+      saveSandbox();
+    }
+  </script>
+</body>
+</html>

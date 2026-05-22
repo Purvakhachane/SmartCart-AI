@@ -1,0 +1,15 @@
+{
+  "name": "amazon-shopping-assistant-platform",
+  "version": "1.0.0",
+  "description": "AI-powered Amazon Shopping Assistant Platform",
+  "scripts": {
+    "install:all": "npm install && cd server && npm install && cd ../client && npm install",
+    "server": "node server/server.js",
+    "client": "cd client && npm run dev",
+    "dev": "npx concurrently \"npm run server\" \"npm run client\""
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
